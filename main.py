@@ -1,5 +1,4 @@
 import pygame
-import random
 from GameObject import GameObject
 from dataTypes import Vector2D
 from initFunc import Init
@@ -11,15 +10,11 @@ startVel = Vector2D(0,0)
 
 listLoadGO = []
 
-gameObject = GameObject("sam", init.screen, "sam katz.jpg", Vector2D(0,0), 0, "PlayerMovement")
+gameObject = GameObject("sam", init.screen, "sam katz.jpg", Vector2D(0,0), Vector2D(1,1) ,0, "PlayerMovement")
 gameObject2 = GameObject("katz", init.screen, "sam katz.jpg")
 for object in GameObject.instanceList:
-	listLoadGO.append(object.start())
+	object.start()
 
-## group all the sprites together for ease of update
-
-
-## Game loop
 running = True
 i=0
 while running:
@@ -39,7 +34,7 @@ while running:
 			
 	llgIt = 0
 	for object in GameObject.instanceList:
-		init.screen.blit(listLoadGO[llgIt], (object.transform.x, object.transform.y))
+		init.screen.blit(object.load, (object.transform.x, object.transform.y))
 		llgIt+=1
 	init.FrameEnd()       
 	i+=1

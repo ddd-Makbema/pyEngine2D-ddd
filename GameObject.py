@@ -1,7 +1,6 @@
 
 import pygame
 from dataTypes import Vector2D
-import importlib
 from Exceptions import SpriteNameError
 import os
 
@@ -21,6 +20,7 @@ class GameObject():
    		sprite: a string containing the name of the image from the data file
 	 	screen: default value contains the instance of the pygame screen defined in main
    		transform: contains the Vector2D(x,y) screen coords for the image to be loaded
+	 	scale: contains the Vector2D(x,y) scale amount with 1 being default pixel size
 	 	rotation: contains a int of the degrees to rotate the image from up and down
    		packages: a list of strings for file names you want to import
 
@@ -28,11 +28,12 @@ class GameObject():
 	instanceList = []
 	listNames = []
 	gameObjectDict = {}
-	def __init__(self, name ,screen, sprite="null.png",  transform=Vector2D(0,0), rotation=0, *args):
+	def __init__(self, name ,screen, sprite="null.png",  transform=Vector2D(0,0), scale=Vector2D(0,0), rotation=0, *args):
 		"""Initializes game object and adds the instance to all the lists"""
 		self.sprite = "data/" + sprite 
 		self.screen = screen 
 		self.transform = transform 
+		self.scale = scale
 		self.rotation = rotation
 		self.packages = args
 		if name in GameObject.listNames:
@@ -52,8 +53,11 @@ class GameObject():
 	def start(self):
 		"""Initializes the sprite as an object and imports all packages needed.
   		Returns: 
-			a pygame image object with the sprite from data loaded as the sprite"""
+			a pygame image object with the sprite from data loaded as the sprite and saves the size of the image"""
 		self.load = pyLoad(self.sprite)
+
+		self.size = Vector2D(self.load.get_width(), self.load.get_height())
+		self.scale = Vector2D(self.size.x, self.size.y)
 		for script in self.packages:
 			full_module_name = "scripts." + script + "." + script
 			self.packageList.append(import_class_from_string(full_module_name))
@@ -63,7 +67,7 @@ class GameObject():
 			self.packageInstance.append(pack(self))
 
 			
-		return pyLoad(self.sprite)
+		return
 
 
 	def Update(self):
@@ -74,7 +78,7 @@ class GameObject():
 				p.Update()
 			except AttributeError:
 				pass
-				
+		self.load = pygame.transform.scale(self.load, (self.scale.x, self.scale.y))
 		return
 	def FixedUpdate(self):
 		"""Same as update but for fixed update: physics calculations"""
