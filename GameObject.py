@@ -1,40 +1,59 @@
+
 import pygame
 from dataTypes import Vector2D
 import importlib
-
-#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
+from Exceptions import SpriteNameError
+import os
 
 class GameObject():
-	#Global variables to get different aspects of GO
-	#list of the instances of each gameObject
+	"""Allows calling of user made packages amd inter-file communication 
+ of instance variables.
+
+	Auto imports files from data specified by when creating each instance 
+	of game object. It allows communication between different game 
+	objects in all files as well as overridable functions such as Update
+	for each user made package.
+
+	Attributes:
+ 		instanceList: list of all instances of game objects
+   		listNames: list of each user defined name for the game objects
+	 	gameObjectDict: dictionary keying the name of game objects to the instance
+   		sprite: a string containing the name of the image from the data file
+	 	screen: default value contains the instance of the pygame screen defined in main
+   		transform: contains the Vector2D(x,y) screen coords for the image to be loaded
+	 	rotation: contains a int of the degrees to rotate the image from up and down
+   		packages: a list of strings for file names you want to import
+
+"""
 	instanceList = []
-	#list of the names of each gameObject
 	listNames = []
-	#each name mapped to an instance of the gameObject
 	gameObjectDict = {}
-	def __init__(self, name ,screen, sprite="null.png",  transform=Vector2D(0,0), rotation=0, Fps=60, Ffps=100, *args):
-		self.sprite = "data/" + sprite #what image to load
-		self.screen = screen #default variable for the pygame screen
-		self.transform = transform #XY coords of the image
-		self.rotation = rotation #rotation of the image
-		self.packages = args #name of the user made packages to load from scripts
-		'''names each gameObject and makes sure that there are no duplicates '''
+	def __init__(self, name ,screen, sprite="null.png",  transform=Vector2D(0,0), rotation=0, *args):
+		"""Initializes game object and adds the instance to all the lists"""
+		self.sprite = "data/" + sprite 
+		self.screen = screen 
+		self.transform = transform 
+		self.rotation = rotation
+		self.packages = args
 		if name in GameObject.listNames:
 			i=1
 			while name in GameObject.listNames:
 				name = name + f"({i})"
 				i+=1
-		self.name = name #name for player to id the go's
-		GameObject.listNames.append(name) #adds it to a list of all game object names
-		GameObject.instanceList.append(self) #adds the instance of the game object to a list
-		self.packageList = [] #all user made scripts to load later
-		self.packageInstance = [] #list of instances of user made scripts
-		GameObject.gameObjectDict[self.name] = self #adds this game object to a dictionary of all game objects
+		self.name = name
+		GameObject.listNames.append(name) 
+		GameObject.instanceList.append(self) 
+		self.packageList = [] 
+		self.packageInstance = [] 
+		GameObject.gameObjectDict[self.name] = self 
 		
 		
 
 	def start(self):
-		self.load = pygame.image.load(self.sprite)
+		"""Initializes the sprite as an object and imports all packages needed.
+  		Returns: 
+			a pygame image object with the sprite from data loaded as the sprite"""
+		self.load = pyLoad(self.sprite)
 		for script in self.packages:
 			full_module_name = "scripts." + script + "." + script
 			self.packageList.append(import_class_from_string(full_module_name))
@@ -44,10 +63,12 @@ class GameObject():
 			self.packageInstance.append(pack(self))
 
 			
-		return pygame.image.load(self.sprite)
+		return pyLoad(self.sprite)
 
 
 	def Update(self):
+		"""Called for each game object each frame from main. Calls the update 
+  			function for all packages imported."""
 		for p in self.packageInstance:
 			try:
 				p.Update()
@@ -56,6 +77,7 @@ class GameObject():
 				
 		return
 	def FixedUpdate(self):
+		"""Same as update but for fixed update: physics calculations"""
 		for p in self.packageInstance:
 			try:
 				p.FixedUpdate()
@@ -64,16 +86,22 @@ class GameObject():
 				
 		return
 
+		
 def import_class_from_string(string_name):
-    """Given a string like 'module.submodule.func_name' which refers to a function, return that function so it can be called"""
-    # Split the string_name into 2, the module that it's in, and func_name, the function itself
-    mod_name, func_name = string_name.rsplit(".", 1)
+	"""Given a string like 'module.submodule.func_name' which refers to a function, return that function so it can be called
+ 	Returns:
+  		instance of the package imported from the string"""
+	mod_name, func_name = string_name.rsplit(".", 1)
+	
+	mod = __import__(mod_name)
+	for i in mod_name.split(".")[1:]:
+		mod = getattr(mod, i)
+		
+	return getattr(mod, func_name)
 
-    mod = __import__(mod_name)
-    # ``__import__`` only gives us the top level module, i.e. ``module``, so 'walk down the tree' getattr'ing each submodule.
-    # from http://docs.python.org/faq/programming.html?highlight=importlib#import-x-y-z-returns-module-x-how-do-i-get-z
-    for i in mod_name.split(".")[1:]:
-        mod = getattr(mod, i)
-
-    # Now that we have a reference to ``module.submodule``, ``func_name`` is available as an attribute to that, so return it.
-    return getattr(mod, func_name)
+def pyLoad(sprite_to_load):
+	"""Shorter function to load and return a pygame image type variable while 
+ 		also calling a more descriptive exception if the sprite doesn't exist."""
+	if not (os.path.exists(sprite_to_load)):
+		raise SpriteNameError(sprite_to_load.strip("data/"))
+	return pygame.image.load(sprite_to_load)
