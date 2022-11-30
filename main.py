@@ -25,9 +25,9 @@ while running:
 		if event.type == pygame.QUIT:
 			running = False
     #3 Draw/render
-	if (i%init.FPS):
-		for object in GameObject.instanceList:
-			object.Update()
+
+	for object in GameObject.instanceList:
+		object.Update()
 	if (i%init.FixedFps):
 		for object in GameObject.instanceList:
 			object.FixedUpdate()

@@ -8,5 +8,5 @@ class PlayerMovement:
 		GameObject.gameObjectDict["sam"] = gameObject
 	def Update(self):
 		self.gameObject.transform = self.gameObject.transform + Vector2D(1,1)
-		self.gameObject.scale = self.gameObject.scale + Vector2D(1,1)
+		self.gameObject.scale = Vector2D(10,10)
 		

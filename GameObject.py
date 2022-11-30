@@ -28,7 +28,7 @@ class GameObject():
 	instanceList = []
 	listNames = []
 	gameObjectDict = {}
-	def __init__(self, name ,screen, sprite="null.png",  transform=Vector2D(0,0), scale=Vector2D(0,0), rotation=0, *args):
+	def __init__(self, name ,screen, sprite="null.png",  transform=Vector2D(0,0), scale=Vector2D(1,1), rotation=0, *args):
 		"""Initializes game object and adds the instance to all the lists"""
 		self.sprite = "data/" + sprite 
 		self.screen = screen 
@@ -57,7 +57,6 @@ class GameObject():
 		self.load = pyLoad(self.sprite)
 
 		self.size = Vector2D(self.load.get_width(), self.load.get_height())
-		self.scale = Vector2D(self.size.x, self.size.y)
 		for script in self.packages:
 			full_module_name = "scripts." + script + "." + script
 			self.packageList.append(import_class_from_string(full_module_name))
@@ -78,7 +77,8 @@ class GameObject():
 				p.Update()
 			except AttributeError:
 				pass
-		self.load = pygame.transform.scale(self.load, (self.scale.x, self.scale.y))
+		self.load = pygame.transform.scale(self.load,
+					(self.scale.x * self.size.x, self.scale.y * self.size.y))
 		return
 	def FixedUpdate(self):
 		"""Same as update but for fixed update: physics calculations"""
