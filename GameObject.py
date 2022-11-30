@@ -51,7 +51,7 @@ class GameObject():
 		
 
 	def start(self):
-		"""Initializes the sprite as an object and imports all packages needed.
+		"""Initializes the sprite as an object and imports all packages needed. And calls the start funtions for them.
   		Returns: 
 			a pygame image object with the sprite from data loaded as the sprite and saves the size of the image"""
 		self.loadStart = pyLoad(self.sprite)
@@ -64,14 +64,19 @@ class GameObject():
 
 		for pack in self.packageList:
 			self.packageInstance.append(pack(self))
-
+		for p in self.packageInstance:
+			try:
+				p.Start()
+			except AttributeError:
+				pass
 			
 		return
 
 
 	def Update(self):
 		"""Called for each game object each frame from main. Calls the update 
-  			function for all packages imported."""
+  			function for all packages imported. Scales and Rotates 
+	 the game object as needed."""
 
 		for p in self.packageInstance:
 			try:

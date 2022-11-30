@@ -9,4 +9,3 @@ class PlayerMovement:
 	def Update(self):
 		self.gameObject.transform = Vector2D(100,100)
 		self.gameObject.rotation = self.gameObject.rotation + 1
-		
