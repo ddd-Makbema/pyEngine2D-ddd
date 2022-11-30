@@ -34,7 +34,8 @@ while running:
 			
 	llgIt = 0
 	for object in GameObject.instanceList:
-		init.screen.blit(object.load, (object.transform.x, object.transform.y))
+		objectTransform = object.load.get_rect(center = (object.transform.x, object.transform.y))
+		init.screen.blit(object.load, objectTransform)
 		llgIt+=1
 	init.FrameEnd()       
 	i+=1

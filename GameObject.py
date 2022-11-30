@@ -54,9 +54,9 @@ class GameObject():
 		"""Initializes the sprite as an object and imports all packages needed.
   		Returns: 
 			a pygame image object with the sprite from data loaded as the sprite and saves the size of the image"""
-		self.load = pyLoad(self.sprite)
-
-		self.size = Vector2D(self.load.get_width(), self.load.get_height())
+		self.loadStart = pyLoad(self.sprite)
+		self.currentRotation = 0
+		self.size = Vector2D(self.loadStart.get_width(), self.loadStart.get_height())
 		for script in self.packages:
 			full_module_name = "scripts." + script + "." + script
 			self.packageList.append(import_class_from_string(full_module_name))
@@ -72,13 +72,15 @@ class GameObject():
 	def Update(self):
 		"""Called for each game object each frame from main. Calls the update 
   			function for all packages imported."""
+
 		for p in self.packageInstance:
 			try:
 				p.Update()
 			except AttributeError:
 				pass
-		self.load = pygame.transform.scale(self.load,
+		self.load = pygame.transform.scale(self.loadStart,
 					(self.scale.x * self.size.x, self.scale.y * self.size.y))
+		self.load = pygame.transform.rotate(self.loadStart, self.rotation)
 		return
 	def FixedUpdate(self):
 		"""Same as update but for fixed update: physics calculations"""
