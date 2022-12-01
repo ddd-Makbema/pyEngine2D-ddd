@@ -22,13 +22,14 @@ class GameObject():
    		transform: contains the Vector2D(x,y) screen coords for the image to be loaded
 	 	scale: contains the Vector2D(x,y) scale amount with 1 being default pixel size
 	 	rotation: contains a int of the degrees to rotate the image from up and down
+   		parent: string with the name of the game object to inherit Transform from.
    		packages: a list of strings for file names you want to import
 
 """
 	instanceList = []
 	listNames = []
 	gameObjectDict = {}
-	def __init__(self, name ,screen, sprite="null.png",  transform=Vector2D(0,0), scale=Vector2D(1,1), rotation=0, *args):
+	def __init__(self, name ,screen, sprite="null.png",  transform=Vector2D(0,0), scale=Vector2D(1,1), rotation=0, parent=None, *args):
 		"""Initializes game object and adds the instance to all the lists"""
 		self.sprite = "data/" + sprite 
 		self.screen = screen 
@@ -36,6 +37,7 @@ class GameObject():
 		self.scale = scale
 		self.rotation = rotation
 		self.packages = args
+		self.parent = parent
 		if name in GameObject.listNames:
 			i=1
 			while name in GameObject.listNames:
@@ -59,8 +61,8 @@ class GameObject():
 		self.size = Vector2D(self.loadStart.get_width(), self.loadStart.get_height())
 		for script in self.packages:
 			full_module_name = "scripts." + script + "." + script
-			self.packageList.append(import_class_from_string(full_module_name))
-		
+			self.packageList.append(self.import_class_from_string(full_module_name))
+			
 
 		for pack in self.packageList:
 			self.packageInstance.append(pack(self))
@@ -77,16 +79,16 @@ class GameObject():
 		"""Called for each game object each frame from main. Calls the update 
   			function for all packages imported. Scales and Rotates 
 	 the game object as needed."""
-
+	
 		for p in self.packageInstance:
+			
 			try:
 				p.Update()
 			except AttributeError:
 				pass
-		self.load = pygame.transform.scale(self.loadStart,
-					(self.scale.x * self.size.x, self.scale.y * self.size.y))
-		self.load = pygame.transform.rotate(self.loadStart, self.rotation)
+		self.load = self.rotateAndScale()
 		return
+		
 	def FixedUpdate(self):
 		"""Same as update but for fixed update: physics calculations"""
 		for p in self.packageInstance:
@@ -97,18 +99,42 @@ class GameObject():
 				
 		return
 
+	def ParentTransform(self):
+		"""Returns the transform of the gameObject to local coords translated from the parent object. If there isn't a parent then returns normal coords."""
+		if not self.parent:
+			return (self.transform.x,self.transform.y)
+		else:
+			return ((self.transform.x + 
+				GameObject.gameObjectDict[self.parent].transform.x),
+					(self.transform.y + 
+					GameObject.gameObjectDict[self.parent].transform.y))
+	def ParentScale(self):
+		if not self.parent:
+			return (self.scale.x * self.size.x, self.scale.y * self.size.y)
 		
-def import_class_from_string(string_name):
-	"""Given a string like 'module.submodule.func_name' which refers to a function, return that function so it can be called
- 	Returns:
-  		instance of the package imported from the string"""
-	mod_name, func_name = string_name.rsplit(".", 1)
+		pScale = (self.scale.x * self.size.x * 
+				  GameObject.gameObjectDict[self.parent].scale.x
+				  , self.scale.y * self.size.y * 
+				  GameObject.gameObjectDict[self.parent].scale.y)
+		return pScale
+
+	def rotateAndScale(self):
+		scale = self.ParentScale()
+		image = pygame.transform.scale(self.loadStart, scale)
+		image = pygame.transform.rotate(self.loadStart, self.rotation)
+		return image
 	
-	mod = __import__(mod_name)
-	for i in mod_name.split(".")[1:]:
-		mod = getattr(mod, i)
+	def import_class_from_string(self, string_name):
+		"""Given a string like 'module.submodule.func_name' which refers to a 	function, return that function so it can be called
+ 		Returns:
+  			instance of the package imported from the string"""
+		mod_name, func_name = string_name.rsplit(".", 1)
+	
+		mod = __import__(mod_name)
+		for i in mod_name.split(".")[1:]:
+			mod = getattr(mod, i)
 		
-	return getattr(mod, func_name)
+		return getattr(mod, func_name)
 
 def pyLoad(sprite_to_load):
 	"""Shorter function to load and return a pygame image type variable while 

@@ -7,5 +7,5 @@ class PlayerMovement:
 		self.gameObject = gameObject
 		GameObject.gameObjectDict["sam"] = gameObject
 	def Update(self):
-		self.gameObject.transform = Vector2D(100,100)
+		self.gameObject.transform = self.gameObject.transform + Vector2D(5,1)
 		self.gameObject.rotation = self.gameObject.rotation + 1

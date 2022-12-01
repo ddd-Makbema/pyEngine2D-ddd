@@ -10,8 +10,9 @@ startVel = Vector2D(0,0)
 
 listLoadGO = []
 
-gameObject = GameObject("sam", init.screen, "sam katz.jpg", Vector2D(0,0), Vector2D(1,1) ,0, "PlayerMovement")
-gameObject2 = GameObject("katz", init.screen, "sam katz.jpg")
+gameObject = GameObject("sam", init.screen, "sam katz.jpg", Vector2D(100,100), Vector2D(1,1) ,90, None, "PlayerMovement")
+gameObject2 = GameObject("katz", init.screen, "sam katz.jpg", Vector2D(100,100), Vector2D(1,1) ,90, "sam")
+
 for object in GameObject.instanceList:
 	object.start()
 
@@ -34,7 +35,8 @@ while running:
 			
 	llgIt = 0
 	for object in GameObject.instanceList:
-		objectTransform = object.load.get_rect(center = (object.transform.x, object.transform.y))
+		objectTransform = object.load.get_rect(
+				center = object.ParentTransform())
 		init.screen.blit(object.load, objectTransform)
 		llgIt+=1
 	init.FrameEnd()       
