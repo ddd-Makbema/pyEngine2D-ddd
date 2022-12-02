@@ -53,8 +53,8 @@ class GameObject():
 		
 
 	def start(self):
-		"""Initializes the sprite as an object and imports all packages needed. And calls the start funtions for them.
-  		Returns: 
+		"""Initializes the sprite as an object and imports all packages needed. And calls the start funtions for them.\n
+  		Returns: \n
 			a pygame image object with the sprite from data loaded as the sprite and saves the size of the image"""
 		self.loadStart = pyLoad(self.sprite)
 		self.currentRotation = 0
@@ -104,10 +104,11 @@ class GameObject():
 		if not self.parent:
 			return (self.transform.x,self.transform.y)
 		else:
-			return ((self.transform.x + 
-				GameObject.gameObjectDict[self.parent].transform.x),
-					(self.transform.y + 
-					GameObject.gameObjectDict[self.parent].transform.y))
+			parent = GameObject.gameObjectDict[self.parent]
+			localPosition = ((self.transform.x + parent.transform.x * parent.scale.x),
+					(self.transform.y + parent.transform.y * parent.scale.y))
+			
+			return localPosition
 	def ParentScale(self):
 		if not self.parent:
 			return (self.scale.x * self.size.x, self.scale.y * self.size.y)
@@ -119,9 +120,11 @@ class GameObject():
 		return pScale
 
 	def rotateAndScale(self):
+		"""Rotates and Scales the image accounting for parent/child transforms\n
+  and returns the image to be rendered."""
 		scale = self.ParentScale()
 		image = pygame.transform.scale(self.loadStart, scale)
-		image = pygame.transform.rotate(self.loadStart, self.rotation)
+		image = pygame.transform.rotate(image, self.rotation)
 		return image
 	
 	def import_class_from_string(self, string_name):
