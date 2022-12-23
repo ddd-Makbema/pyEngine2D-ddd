@@ -15,7 +15,7 @@ class Init:
 		
 		pygame.init()
 		pygame.mixer.init()  ## For sound
-		self.screen = pygame.display.set_mode((self.WIDTH, self.Height))
+		self.screen = pygame.display.set_mode((self.WIDTH, self.Height), pygame.RESIZABLE)
 		pygame.display.set_caption(self.Name_Window)
 		self.clock = pygame.time.Clock() 
 

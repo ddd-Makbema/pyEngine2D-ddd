@@ -3,6 +3,7 @@ import pygame
 from dataTypes import Vector2D
 from Exceptions import SpriteNameError
 import os
+import math
 
 class GameObject():
 	"""Allows calling of user made packages amd inter-file communication 
@@ -59,6 +60,8 @@ class GameObject():
 		self.loadStart = pyLoad(self.sprite)
 		self.currentRotation = 0
 		self.size = Vector2D(self.loadStart.get_width(), self.loadStart.get_height())
+		if self.parent:
+			self.parentInst = GameObject.gameObjectDict[self.parent]
 		for script in self.packages:
 			full_module_name = "scripts." + script + "." + script
 			self.packageList.append(self.import_class_from_string(full_module_name))
@@ -86,7 +89,7 @@ class GameObject():
 				p.Update()
 			except AttributeError:
 				pass
-		self.load = self.rotateAndScale()
+		self.load = self.fScale()
 		return
 		
 	def FixedUpdate(self):
@@ -103,28 +106,37 @@ class GameObject():
 		"""Returns the transform of the gameObject to local coords translated from the parent object. If there isn't a parent then returns normal coords."""
 		if not self.parent:
 			return (self.transform.x,self.transform.y)
-		else:
-			parent = GameObject.gameObjectDict[self.parent]
-			localPosition = ((self.transform.x + parent.transform.x * parent.scale.x),
-					(self.transform.y + parent.transform.y * parent.scale.y))
+		else:		
+			rotateTrans = self.RotateTransform(self.parentInst.rotation, 
+					self.transform.x*self.parentInst.scale.x, self.transform.y*self.parentInst.scale.y)
+			return rotateTrans
 			
-			return localPosition
 	def ParentScale(self):
 		if not self.parent:
-			return (self.scale.x * self.size.x, self.scale.y * self.size.y)
+			return (self.scale.x * self.size.x,
+					self.scale.y * self.size.y)
 		
 		pScale = (self.scale.x * self.size.x * 
-				  GameObject.gameObjectDict[self.parent].scale.x
-				  , self.scale.y * self.size.y * 
+				  GameObject.gameObjectDict[self.parent].scale.x,
+				  self.scale.y * self.size.y * 
 				  GameObject.gameObjectDict[self.parent].scale.y)
 		return pScale
 
-	def rotateAndScale(self):
-		"""Rotates and Scales the image accounting for parent/child transforms\n
+	def RotateTransform(self, rotation, radiusX, radiusY):
+		angle_rad = math.radians(180-rotation)
+		x = radiusX * math.sin(angle_rad)
+		y = radiusY * math.cos(angle_rad)
+		return (x+self.parentInst.transform.x,y+self.parentInst.transform.y)
+
+	def fScale(self):
+		"""Scales the image accounting for parent/child transforms\n
   and returns the image to be rendered."""
 		scale = self.ParentScale()
-		image = pygame.transform.scale(self.loadStart, scale)
-		image = pygame.transform.rotate(image, self.rotation)
+		image = pygame.transform.scale(self.loadStart , scale)
+		if self.parent:
+			image = pygame.transform.rotate(image, self.rotation-self.parentInst.rotation)
+		else:
+			image = pygame.transform.rotate(image, -self.rotation)
 		return image
 	
 	def import_class_from_string(self, string_name):
@@ -144,4 +156,4 @@ def pyLoad(sprite_to_load):
  		also calling a more descriptive exception if the sprite doesn't exist."""
 	if not (os.path.exists(sprite_to_load)):
 		raise SpriteNameError(sprite_to_load.strip("data/"))
-	return pygame.image.load(sprite_to_load)
+	return pygame.image.load(sprite_to_load).convert_alpha()
