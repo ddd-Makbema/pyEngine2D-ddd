@@ -1,7 +1,7 @@
 
 import pygame
-from dataTypes import Vector2D
-from Exceptions import SpriteNameError
+from data_types import Vector2D
+from exceptions import SpriteNameError
 import os
 import math
 
@@ -39,6 +39,8 @@ class GameObject():
 		self.rotation = rotation
 		self.packages = args
 		self.parent = parent
+		self.lastScale = 0
+		self.lastParentScale = 0
 		if name in GameObject.listNames:
 			i=1
 			while name in GameObject.listNames:
@@ -62,8 +64,10 @@ class GameObject():
 		self.size = Vector2D(self.loadStart.get_width(), self.loadStart.get_height())
 		if self.parent:
 			self.parentInst = GameObject.gameObjectDict[self.parent]
+		else:
+			self.parentInst = None
 		for script in self.packages:
-			full_module_name = "scripts." + script + "." + script
+			full_module_name = "scripts." + script
 			self.packageList.append(self.import_class_from_string(full_module_name))
 			
 
@@ -112,15 +116,33 @@ class GameObject():
 			return rotateTrans
 			
 	def ParentScale(self):
-		if not self.parent:
-			return (self.scale.x * self.size.x,
-					self.scale.y * self.size.y)
-		
-		pScale = (self.scale.x * self.size.x * 
-				  GameObject.gameObjectDict[self.parent].scale.x,
-				  self.scale.y * self.size.y * 
-				  GameObject.gameObjectDict[self.parent].scale.y)
-		return pScale
+		if self.scale != self.lastScale:
+			if not self.parent:
+				self.lastScale = self.scale
+				scale = (self.scale.x * self.size.x,
+						self.scale.y * self.size.y)
+				self.previousScale = scale
+				return scale
+			self.lastScale = self.scale
+			self.lastParentScale = self.parentInst.scale
+			pScale = (self.scale.x * self.size.x * 
+					  self.parentInst.scale.x,
+					  self.scale.y * self.size.y * 
+					  self.parentInst.scale.y)
+			self.previousScale = pScale
+			return pScale
+		elif self.parentInst:
+			if self.parentInst.scale != self.lastParentScale:
+				self.lastScale = self.scale
+				self.lastParentScale = self.parentInst.scale
+				pScale = (self.scale.x * self.size.x * 
+					  self.parentInst.scale.x,
+					  self.scale.y * self.size.y * 
+					  self.parentInst.scale.y)
+				self.previousScale = pScale
+				return pScale
+		return self.previousScale
+
 
 	def RotateTransform(self, rotation, radiusX, radiusY):
 		angle_rad = math.radians(180-rotation)

@@ -1,1 +1,1 @@
-__all__ = ["PlayerMovement"]
+__all__ = ["player_movement"]
