@@ -18,6 +18,8 @@ Load all the images you want to use into the "data" folder
 Write the main game code into files in the "scripts" folder
   a sample file is provided in the script folder already
   make sure to load all the packages you want by naming the file and class name at the end of the game object declaration
+  
+Finally run the "main" file to run the game
 ## Usage
 
 ```python
