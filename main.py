@@ -8,14 +8,17 @@ init = Init(360,480,30, 100, "sam katz.jpg", "MyGame")
 
 list_load_game_object = []
 
-game_object = GameObject("sam", init.screen, "sam katz.jpg", Vector2D(180,240), Vector2D(2,2) ,45, None, "player_movement.PlayerMovement" )
-game_object = GameObject("katz", init.screen, "sam katz.jpg", Vector2D(50,50), Vector2D(1,1) ,0, "sam")
+#init all game objects
+GameObject("sam", init.screen, "sam katz.jpg", Vector2D(180,240), Vector2D(2,2) ,45, None, "player_movement.PlayerMovement" )
+GameObject("katz", init.screen, "sam katz.jpg", Vector2D(50,50), Vector2D(1,1) ,0, "sam")
 
-for object in GameObject.instances:
+#calls start methods for all all game objects
+for object in GameObject.INSTANCES:
 	object.start()
 
 running = True
 i=0
+#main game loop for fps
 while running:
 	init.clock.tick(init.fps)
 	init.screen.fill(init.green)
@@ -23,14 +26,15 @@ while running:
 		if event.type == pygame.QUIT:
 			running = False
 
-	for object in GameObject.instances:
+	for object in GameObject.INSTANCES:
 		object.update()
-	if (i%init.fixed_fps):
-		for object in GameObject.instances:
+	if (i%init.fixed_fps):  #split this into seperate loop later
+		for object in GameObject.INSTANCES:
 			object.fixed_update()
 			
 	count = 0
-	for object in GameObject.instances:
+	#loads the images onto the screen accounting for transform
+	for object in GameObject.INSTANCES:
 		object_transform = object.load.get_rect(
 				center = object.parent_transform())
 		init.screen.blit(object.load, object_transform)
