@@ -27,9 +27,9 @@ class GameObject():
    		packages: a list of strings for file names you want to import
 
 """
-	instanceList = []
-	listNames = []
-	gameObjectDict = {}
+	instances = []
+	names = []
+	game_objects = {}
 	def __init__(self, name ,screen, sprite="null.png",  transform=Vector2D(0,0), scale=Vector2D(1,1), rotation=0, parent=None, *args):
 		"""Initializes game object and adds the instance to all the lists"""
 		self.sprite = "data/" + sprite 
@@ -39,41 +39,41 @@ class GameObject():
 		self.rotation = rotation
 		self.packages = args
 		self.parent = parent
-		self.lastScale = 0
-		self.lastParentScale = 0
-		if name in GameObject.listNames:
+		self.last_scale = None
+		self.last_parent_scale = None
+		self.image_start = None
+		if name in GameObject.names:
 			i=1
-			while name in GameObject.listNames:
+			while name in GameObject.names:
 				name = name + f"({i})"
 				i+=1
 		self.name = name
-		GameObject.listNames.append(name) 
-		GameObject.instanceList.append(self) 
-		self.packageList = [] 
-		self.packageInstance = [] 
-		GameObject.gameObjectDict[self.name] = self 
+		GameObject.names.append(name) 
+		GameObject.instances.append(self) 
+		self.package_instances = [] 
+		self.packages_import = []
+		GameObject.game_objects[self.name] = self 
 		
 		
 
 	def start(self):
-		"""Initializes the sprite as an object and imports all packages needed. And calls the start funtions for them.\n
-  		Returns: \n
+		"""Initializes the sprite as an object and imports all packages needed. And calls the start funtions for them.
+  		Returns:
 			a pygame image object with the sprite from data loaded as the sprite and saves the size of the image"""
-		self.loadStart = pyLoad(self.sprite)
-		self.currentRotation = 0
-		self.size = Vector2D(self.loadStart.get_width(), self.loadStart.get_height())
+		self.image_start = _pyLoad(self.sprite)
+		self.size = Vector2D(self.image_start.get_width(), self.image_start.get_height())
 		if self.parent:
-			self.parentInst = GameObject.gameObjectDict[self.parent]
+			self.parent_instance = GameObject.game_objects[self.parent]
 		else:
-			self.parentInst = None
+			self.parent_instance = None
 		for script in self.packages:
 			full_module_name = "scripts." + script
-			self.packageList.append(self.import_class_from_string(full_module_name))
+			self.packages_import.append(self._import_class_from_string(full_module_name))
 			
-
-		for pack in self.packageList:
-			self.packageInstance.append(pack(self))
-		for p in self.packageInstance:
+		for pack in self.packages_import:
+			
+			self.package_instances.append(pack(self))
+		for p in self.package_instances:
 			try:
 				p.Start()
 			except AttributeError:
@@ -82,86 +82,86 @@ class GameObject():
 		return
 
 
-	def Update(self):
+	def update(self):
 		"""Called for each game object each frame from main. Calls the update 
   			function for all packages imported. Scales and Rotates 
 	 the game object as needed."""
 	
-		for p in self.packageInstance:
+		for p in self.package_instances:
 			
 			try:
-				p.Update()
+				p.update()
 			except AttributeError:
 				pass
-		self.load = self.fScale()
+		self.load = self._f_scale()
 		return
 		
-	def FixedUpdate(self):
+	def fixed_update(self):
 		"""Same as update but for fixed update: physics calculations"""
-		for p in self.packageInstance:
+		for p in self.package_instances:
 			try:
-				p.FixedUpdate()
+				p.fixed_update()
 			except AttributeError:
 				pass
 				
 		return
 
-	def ParentTransform(self):
+	def parent_transform(self):
 		"""Returns the transform of the gameObject to local coords translated from the parent object. If there isn't a parent then returns normal coords."""
 		if not self.parent:
 			return (self.transform.x,self.transform.y)
 		else:		
-			rotateTrans = self.RotateTransform(self.parentInst.rotation, 
-					self.transform.x*self.parentInst.scale.x, self.transform.y*self.parentInst.scale.y)
-			return rotateTrans
+			rotate_trans = self._rotate_transform(self.parent_instance.rotation, 
+					self.transform.x*self.parent_instance.scale.x, self.transform.y*self.parent_instance.scale.y)
+			return rotate_trans
 			
-	def ParentScale(self):
-		if self.scale != self.lastScale:
+	def _parent_scale(self):
+		if self.scale != self.last_scale:
 			if not self.parent:
-				self.lastScale = self.scale
+				self.last_scale = self.scale
 				scale = (self.scale.x * self.size.x,
 						self.scale.y * self.size.y)
-				self.previousScale = scale
+				self.previous_scale = scale
 				return scale
-			self.lastScale = self.scale
-			self.lastParentScale = self.parentInst.scale
-			pScale = (self.scale.x * self.size.x * 
-					  self.parentInst.scale.x,
+			self.last_scale = self.scale
+			self.last_parent_scale = self.parent_instance.scale
+			p_scale = (self.scale.x * self.size.x * 
+					  self.parent_instance.scale.x,
 					  self.scale.y * self.size.y * 
-					  self.parentInst.scale.y)
-			self.previousScale = pScale
-			return pScale
-		elif self.parentInst:
-			if self.parentInst.scale != self.lastParentScale:
-				self.lastScale = self.scale
-				self.lastParentScale = self.parentInst.scale
-				pScale = (self.scale.x * self.size.x * 
-					  self.parentInst.scale.x,
+					  self.parent_instance.scale.y)
+			self.previous_scale = p_scale
+			return p_scale
+		elif self.parent_instance:
+			if self.parent_instance.scale != self.last_parent_scale:
+				self.last_scale = self.scale
+				self.last_parent_scale = self.parent_instance.scale
+				p_scale = (self.scale.x * self.size.x * 
+					  self.parent_instance.scale.x,
 					  self.scale.y * self.size.y * 
-					  self.parentInst.scale.y)
-				self.previousScale = pScale
-				return pScale
-		return self.previousScale
+					  self.parent_instance.scale.y)
+				self.previous_scale = p_scale
+				return p_scale
+		return self.previous_scale
 
 
-	def RotateTransform(self, rotation, radiusX, radiusY):
+	def _rotate_transform(self, rotation, radius_x, radius_y):
 		angle_rad = math.radians(180-rotation)
-		x = radiusX * math.sin(angle_rad)
-		y = radiusY * math.cos(angle_rad)
-		return (x+self.parentInst.transform.x,y+self.parentInst.transform.y)
+		x = radius_x * math.sin(angle_rad)
+		y = radius_y * math.cos(angle_rad)
+		return (x+self.parent_instance.transform.x,y+self.parent_instance.transform.y)
 
-	def fScale(self):
+	def _f_scale(self):
 		"""Scales the image accounting for parent/child transforms\n
   and returns the image to be rendered."""
-		scale = self.ParentScale()
-		image = pygame.transform.scale(self.loadStart , scale)
+		scale = self._parent_scale()
+		image = pygame.transform.scale(self.image_start , scale)
 		if self.parent:
-			image = pygame.transform.rotate(image, self.rotation-self.parentInst.rotation)
+			image = pygame.transform.rotate(image, self.rotation-self.parent_instance.rotation)
 		else:
 			image = pygame.transform.rotate(image, -self.rotation)
 		return image
 	
-	def import_class_from_string(self, string_name):
+	def _import_class_from_string(self, string_name):
 		"""Given a string like 'module.submodule.func_name' which refers to a 	function, return that function so it can be called
  		Returns:
   			instance of the package imported from the string"""
@@ -173,7 +173,7 @@ class GameObject():
 		
 		return getattr(mod, func_name)
 
-def pyLoad(sprite_to_load):
+def _pyLoad(sprite_to_load):
 	"""Shorter function to load and return a pygame image type variable while 
  		also calling a more descriptive exception if the sprite doesn't exist."""
 	if not (os.path.exists(sprite_to_load)):

@@ -1,29 +1,30 @@
 import pygame
 
 class Init:
-	def __init__(self, WIDTH, HEIGHT, FPS, fFps, icon, Name_Window="<Your_Game>"):
-		self.WIDTH = WIDTH
-		self.Height = HEIGHT
-		self.FPS = FPS
-		self.FixedFps = fFps
-		self.Name_Window = Name_Window
-		self.WHITE = (255, 255, 255)
-		self.BLACK = (0, 0, 0)
-		self.RED = (255, 0, 0)
-		self.GREEN = (0, 255, 0)
-		self.BLUE = (0, 0, 255)
+	def __init__(self, width, height, fps, ffps, icon, name_window="<Your_Game>"):
+		self.width = width
+		self.height = height
+		self.fps = fps
+		self.fixed_fps = ffps
+		self.name_window = name_window
+		self.white = (255, 255, 255)
+		self.black = (0, 0, 0)
+		self.red = (255, 0, 0)
+		self.green = (0, 255, 0)
+		self.blue = (0, 0, 255)
+		self.start_velocity = Vector2D(0,0)
 		self.icon = icon
 		
 		pygame.init()
 		pygame.mixer.init()  ## For sound
-		pygame.display.set_caption(self.Name_Window)
+		pygame.display.set_caption(self.name_window)
 		if self.icon:
 			pygame_icon = pygame.image.load("data/" + self.icon)
 			pygame.display.set_icon(pygame_icon)
-		self.screen = pygame.display.set_mode((self.WIDTH, self.Height), pygame.RESIZABLE)
+		self.screen = pygame.display.set_mode((self.width, self.height), pygame.RESIZABLE)
 		self.clock = pygame.time.Clock() 
 
-	def FrameEnd(self):
+	def frame_end(self):
 		pygame.display.flip()
-	def Group(self):
+	def group(self):
 		return pygame.sprite.Group()
