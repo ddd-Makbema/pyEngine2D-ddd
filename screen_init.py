@@ -13,11 +13,10 @@ class Init:
 			all color vars: tuple of 3 numbers for rgb
 			start_velocity: Vector2D for an initial velocity of 0 speed
 			icon: string for name of image to load on the window"""
-	def __init__(self, width, height, fps, ffps, icon, name_window="<Your_Game>"):
+	def __init__(self, width, height, ffps, icon, name_window="<Your_Game>"):
 		self.width = width
 		self.height = height
-		self.fps = fps
-		self.fixed_fps = ffps
+		self.fixed_fps = 1/ffps
 		self.name_window = name_window
 		self.white = (255, 255, 255)
 		self.black = (0, 0, 0)
