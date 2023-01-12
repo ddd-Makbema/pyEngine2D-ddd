@@ -5,5 +5,6 @@ from screen_init import Init
 
 
 init = Init(360,480, 100, "sam katz.jpg", "MyGame")
-GameObject("sam", init.screen, "sam katz.jpg", Vector2D(180,240), Vector2D(2,2) ,45, None, "player_movement.PlayerMovement" )
-GameObject("katz", init.screen, "sam katz.jpg", Vector2D(50,50), Vector2D(1,1) ,0, "sam")
+GameObject("sam", init.screen, "sam katz.jpg", None, "player_movement.PlayerMovement" )
+print(GameObject.GAME_OBJECTS["sam"].PlayerMovement)
+GameObject("katz", init.screen, "sam katz.jpg", "sam")

@@ -44,21 +44,27 @@ class GameObject():
 		self.name = name
 		self.image_start = None
 
-		self.package_instances = [] 
-		self.packages_import = []
+		self.package_instances = []
 		GameObject.NAMES.append(name) 
 		GameObject.INSTANCES.append(self) 
 		GameObject.GAME_OBJECTS[self.name] = self
 
 		#makes sure there can not be two conflicting names.
 		if name in GameObject.NAMES:
-			i = 1
+			i = 1 
 			while name in GameObject.NAMES:
 				name = name + f"({i})"
 				i += 1
-		
-		
 
+		#initializes the packages for the game object
+		for script in self.packages:
+			full_module_name = "scripts." + script
+			tempInst = self._import_class_from_string(full_module_name)(self)
+			name = script.rsplit(".", 1)[1]	
+			self.package_instances.append(tempInst)
+			setattr(self, name, tempInst)
+		print(self.PlayerMovement)
+		
 	def start(self):
 		"""Initializes the sprite as an object and imports all packages needed. And calls the start funtions for them."""
 
@@ -69,13 +75,6 @@ class GameObject():
 			self.parent_instance = GameObject.GAME_OBJECTS[self.parent]
 		else:
 			self.parent_instance = None
-
-		#initializes the packages for the game object
-		for script in self.packages:
-			full_module_name = "scripts." + script
-			self.packages_import.append(self._import_class_from_string(full_module_name))
-		for pack in self.packages_import:
-			self.package_instances.append(pack(self))
 
 		#calls the start function for all packages if they have them
 		for p in self.package_instances:
