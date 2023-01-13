@@ -43,7 +43,6 @@ class GameObject():
 		self.parent = parent
 		self.name = name
 		self.image_start = None
-
 		self.package_instances = []
 		GameObject.NAMES.append(name) 
 		GameObject.INSTANCES.append(self) 
@@ -63,25 +62,32 @@ class GameObject():
 			name = script.rsplit(".", 1)[1]	
 			self.package_instances.append(tempInst)
 			setattr(self, name, tempInst)
-		print(self.PlayerMovement)
+		self.start()
 		
 	def start(self):
 		"""Initializes the sprite as an object and imports all packages needed. And calls the start funtions for them."""
 
 		self.image_start = _pyLoad(self.sprite)
-
 		#initializes the parent instance if one was entered
-		if self.parent:
+		try:
 			self.parent_instance = GameObject.GAME_OBJECTS[self.parent]
-		else:
-			self.parent_instance = None
+		except KeyError as e:
+			if self.parent in str(e):
+				self.parent_instance = None
+			else:
+				raise e
 
 		#calls the start function for all packages if they have them
 		for p in self.package_instances:
 			try:
-				p.Start()
-			except AttributeError:
-				pass
+				p.start()
+			except AttributeError as e:
+				if "object has no attribute 'start'" in str(e):
+					pass
+
+				else:
+					raise e					
+
 		return
 
 
@@ -94,8 +100,12 @@ class GameObject():
 		for p in self.package_instances:
 			try:
 				p.update()
-			except AttributeError:
-				pass
+			except AttributeError as e:
+				if "object has no attribute 'update'" in str(e):
+					pass
+
+				else:
+					raise e
 		return
 		
 	def fixed_update(self):
@@ -105,8 +115,13 @@ class GameObject():
 		for p in self.package_instances:
 			try:
 				p.fixed_update()
-			except AttributeError:
-				pass
+			except AttributeError as e:
+				if "object has no attribute 'fixed_update'" in str(e):
+					pass
+
+				else:
+					raise e
+
 		return
 
 	

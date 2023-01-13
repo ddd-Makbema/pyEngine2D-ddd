@@ -15,9 +15,7 @@ list_load_game_object = []
 #init all game objects
 
 
-#calls start methods for all all game objects
-for object in GameObject.INSTANCES:
-	object.start()
+
 
 def update():
 	"""Renders the screen fps times a second."""
@@ -29,9 +27,13 @@ def update():
 		object.update()			
 	#loads the images onto the screen accounting for transform
 	for object in GameObject.INSTANCES:
-		object_transform = object.load.get_rect(
-			center = object.parent_transform())
-		init.screen.blit(object.load, object_transform)
+		try:
+			object_transform = object.Transform.load.get_rect(
+				center = object.Transform.parent_transform())
+			
+			init.screen.blit(object.Transform.load, object_transform)
+		except AttributeError:
+			pass
 	init.frame_end()  
 
 def fixed_update():
