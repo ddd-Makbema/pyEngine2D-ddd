@@ -2,7 +2,6 @@ import pygame
 import time
 from game_object import GameObject
 from data_types import Vector2D
-from screen_init import Init
 from variables import *
 
 running = True
@@ -27,13 +26,10 @@ def update():
 		object.update()			
 	#loads the images onto the screen accounting for transform
 	for object in GameObject.INSTANCES:
-		try:
-			object_transform = object.Transform.load.get_rect(
-				center = object.Transform.parent_transform())
+		object_transform = object.Transform.load.get_rect(
+			center = object.Transform.parent_transform())
 			
-			init.screen.blit(object.Transform.load, object_transform)
-		except AttributeError:
-			pass
+		init.screen.blit(object.Transform.load, object_transform)
 	init.frame_end()  
 
 def fixed_update():

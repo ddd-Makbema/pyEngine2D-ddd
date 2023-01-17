@@ -3,7 +3,6 @@ import pygame
 from data_types import Vector2D
 from exceptions import SpriteNameError
 import os
-import math
 
 class GameObject():
 	"""Allows calling of user made packages amd inter-file communication 
@@ -35,7 +34,7 @@ class GameObject():
 	NAMES = []
 	GAME_OBJECTS = {}
 
-	def __init__(self, name ,screen, sprite="null.png", parent=None, *args):
+	def __init__(self, name ,screen, sprite="null.png", parent="origin", *args):
 		"""Initializes game object and adds the instance to all the lists"""
 		self.sprite = "data/" + sprite #data/ is to pull the image files from the data folder
 		self.screen = screen 
@@ -129,7 +128,7 @@ class GameObject():
 		"""Given a string like 'module.submodule.func_name' which refers to a 	function, return that function so it can be called
  		Returns:
   			instance of the package imported from the string"""
-
+			  
 		mod_name, func_name = string_name.rsplit(".", 1)
 		mod = __import__(mod_name)
 
