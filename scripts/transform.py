@@ -44,7 +44,7 @@ class Transform:
 	def _rotate_transform(self, rotation, radius_x, radius_y):
 		"""Transforms the child to account for the parent's rotation"""
 		if self.game_object.parent != "origin":
-			angle_rad = math.radians(180-rotation)
+			angle_rad = math.radians(180+rotation)
 			x = radius_x * math.sin(angle_rad)
 			y = radius_y * math.cos(angle_rad)
 			return (x+self.game_object.parent_instance.Transform.transform.x,y+self.game_object.parent_instance.Transform.transform.y)
@@ -59,5 +59,8 @@ class Transform:
 		scale = self._scale()
 		image = pygame.transform.scale(self.game_object.image_start , scale)
 
-		image = pygame.transform.rotate(image, self.rotation-self.game_object.parent_instance.Transform.rotation)
+		image = pygame.transform.rotate(image, self.rotation+self.game_object.parent_instance.Transform.rotation)
 		return image
+
+if __name__ == '__main__':
+    pass

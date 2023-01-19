@@ -16,3 +16,6 @@ class ParentError(Exception):
 
     def __str__(self):
         return f"The game object named {self.f} does not exist and is trying to be called as a parent"
+        
+if __name__ == '__main__':
+    pass

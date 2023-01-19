@@ -1,7 +1,7 @@
 import pygame
 from data_types import Vector2D
 
-class Init:
+class ScreenInit:
 	"""Starts the screen for the game and initializes default values.
 	
 		Attributes:
@@ -13,10 +13,11 @@ class Init:
 			all color vars: tuple of 3 numbers for rgb
 			start_velocity: Vector2D for an initial velocity of 0 speed
 			icon: string for name of image to load on the window"""
-	def __init__(self, width, height, ffps, icon, name_window="<Your_Game>"):
+	def __init__(self, width, height, fps, ffps, icon, name_window="<Your_Game>"):
 		self.width = width
 		self.height = height
 		self.fixed_fps = 1/ffps
+		self.fps = fps
 		self.name_window = name_window
 		self.white = (255, 255, 255)
 		self.black = (0, 0, 0)
@@ -40,3 +41,6 @@ class Init:
 	def frame_end(self):
 		"""Updates the screen for the new frame"""
 		pygame.display.flip()
+
+if __name__ == '__main__':
+    pass

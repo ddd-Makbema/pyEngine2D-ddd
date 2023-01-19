@@ -1,8 +1,7 @@
 import pygame
 import time
 from game_object import GameObject
-from data_types import Vector2D
-from variables import *
+from variables import screen
 
 running = True
 timer = 0
@@ -18,7 +17,7 @@ list_load_game_object = []
 
 def update():
 	"""Renders the screen fps times a second."""
-	init.screen.fill(init.green)
+	screen.screen.fill(screen.green)
 	for event in pygame.event.get():   
 		if event.type == pygame.QUIT:
 			running = False
@@ -29,8 +28,8 @@ def update():
 		object_transform = object.Transform.load.get_rect(
 			center = object.Transform.parent_transform())
 			
-		init.screen.blit(object.Transform.load, object_transform)
-	init.frame_end()  
+		screen.screen.blit(object.Transform.load, object_transform)
+	screen.frame_end()  
 
 def fixed_update():
 	"""calls the fixed update function at set times per second. Independent from update"""
@@ -43,18 +42,30 @@ def delta_time():
 	start_time = time.time()
 	return x
 
-while running:
-	while timer > init.fixed_fps:
-		fixed_update()
-		timer -= init.fixed_fps
-	update()
-	for event in pygame.event.get():   
-		if event.type == pygame.QUIT:
-			running = False
-	timer += delta_time()
-
+def game_loop():
+	"""The main game loop that runs as the game runs. Returns when the pygame window is closed."""
+	global running
+	global timer
+	while running:
+		while timer > screen.fixed_fps:
+			fixed_update()
+			timer -= screen.fixed_fps
+		update()
+		for event in pygame.event.get():  
+			if event.type == pygame.QUIT:
+				running = False
+				return
+		screen.clock.tick(screen.fps)
+		timer += delta_time()
+	pygame.quit()
+	return
+	
+game_loop()
 
 pygame.quit()
+
+if __name__ == '__main__':
+    pass
 
 # All Awake calls
 # All Start Calls

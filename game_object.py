@@ -143,3 +143,6 @@ def _pyLoad(sprite_to_load):
 	if not (os.path.exists(sprite_to_load)):
 		raise SpriteNameError(sprite_to_load.strip("data/"))
 	return pygame.image.load(sprite_to_load).convert_alpha()
+
+if __name__ == '__main__':
+    pass
