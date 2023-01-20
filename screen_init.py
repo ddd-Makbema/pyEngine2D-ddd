@@ -1,5 +1,4 @@
 import pygame
-from data_types import Vector2D
 
 class ScreenInit:
 	"""Starts the screen for the game and initializes default values.
@@ -24,7 +23,7 @@ class ScreenInit:
 		self.red = (255, 0, 0)
 		self.green = (0, 255, 0)
 		self.blue = (0, 0, 255)
-		self.start_velocity = Vector2D(0,0)
+		self.start_velocity = [0,0]
 		self.icon = icon
 		
 		pygame.init()

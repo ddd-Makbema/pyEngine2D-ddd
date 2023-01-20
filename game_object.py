@@ -1,6 +1,5 @@
 
 import pygame
-from data_types import Vector2D
 from exceptions import SpriteNameError
 import os
 
