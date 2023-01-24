@@ -122,6 +122,31 @@ class GameObject():
 
 		return
 
+	def on_collision_enter(self):
+		for p in self.package_instances:
+			try:
+				p.on_collision_enter()
+			except AttributeError as e:
+				if "object has no attribute 'on_collision_enter'" in str(e):
+					pass
+
+				else:
+					raise e
+
+		return
+
+	def on_trigger_enter(self):
+		for p in self.package_instances:
+			try:
+				p.on_trigger_enter()
+			except AttributeError as e:
+				if "object has no attribute 'on_trigger_enter'" in str(e):
+					pass
+
+				else:
+					raise e
+
+		return
 	
 	def _import_class_from_string(self, string_name):
 		"""Given a string like 'module.submodule.func_name' which refers to a 	function, return that function so it can be called
