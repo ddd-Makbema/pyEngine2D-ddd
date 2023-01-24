@@ -1,20 +1,21 @@
 from game_object import GameObject
-from data_types import Vector2D
 import pygame
 import math
 
 
 class Transform:
+	"""Contains all the methods for rendering a moving image on the screen
+	and changing attributes of that image."""
 	def __init__(self, game_object):
 		self.game_object = game_object
-		self.transform = Vector2D(0,0) 
-		self.scale = Vector2D(1,1)
+		self.transform = [0,0]
+		self.scale = [1,1]
 		self.rotation = 0
-		self.last_scale = Vector2D(-1,-1)
-		self.last_parent_scale = Vector2D(-1,-1)
+		self.last_scale = [-1,-1]
+		self.last_parent_scale = [-1,-1]
 	
 	def start(self):
-		self.size = Vector2D(self.game_object.image_start.get_width(), self.game_object.image_start.get_height())
+		self.size = [self.game_object.image_start.get_width(), self.game_object.image_start.get_height()]
 		
 	def update(self):
 		self.load = self._f_scale()
@@ -23,7 +24,7 @@ class Transform:
 		"""Returns the transform of the gameObject to local coords translated from the parent object. If there isn't a parent then returns normal coords."""
 
 		rotate_trans = self._rotate_transform(self.game_object.parent_instance.Transform.rotation, 
-			self.transform.x*self.game_object.parent_instance.Transform.scale.x, self.transform.y*self.game_object.parent_instance.Transform.scale.y)
+			self.transform[0]*self.game_object.parent_instance.Transform.scale[0], self.transform[1]*self.game_object.parent_instance.Transform.scale[1])
 		return rotate_trans
 			
 	def _scale(self):
@@ -37,8 +38,8 @@ class Transform:
 	def _parent_scale(self):
 		"""scales the object according to the parent's scale value"""
 
-		p_scale = (self.scale.x * self.size.x * self.game_object.parent_instance.Transform.scale.x,
-					self.scale.y * self.size.y * self.game_object.parent_instance.Transform.scale.y)
+		p_scale = (self.scale[0] * self.size[0] * self.game_object.parent_instance.Transform.scale[0],
+					self.scale[1] * self.size[1] * self.game_object.parent_instance.Transform.scale[1])
 		return p_scale
 
 	def _rotate_transform(self, rotation, radius_x, radius_y):
@@ -47,17 +48,17 @@ class Transform:
 			angle_rad = math.radians(180+rotation)
 			x = radius_x * math.sin(angle_rad)
 			y = radius_y * math.cos(angle_rad)
-			return (x+self.game_object.parent_instance.Transform.transform.x,y+self.game_object.parent_instance.Transform.transform.y)
+			return (x+self.game_object.parent_instance.Transform.transform[0],y+self.game_object.parent_instance.Transform.transform[1])
 		else:
-			return (self.transform.x,self.transform.y)
+			return (self.transform[0],self.transform[1])
 		
 
 	def _f_scale(self):
 		"""Scales the image accounting for parent/child transforms
   and returns the image to be rendered."""
 
-		scale = self._scale()
-		image = pygame.transform.scale(self.game_object.image_start , scale)
+		self.final_scale = self._scale()
+		image = pygame.transform.scale(self.game_object.image_start , self.final_scale)
 
 		image = pygame.transform.rotate(image, self.rotation+self.game_object.parent_instance.Transform.rotation)
 		return image
