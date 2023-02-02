@@ -46,15 +46,17 @@ def game_loop():
 	"""The main game loop that runs as the game runs. Returns when the pygame window is closed."""
 	global running
 	global timer
+	for object in GameObject.INSTANCES:
+		object.start()
 	while running:
-		while timer > screen.fixed_fps:
-			fixed_update()
-			timer -= screen.fixed_fps
-		update()
 		for event in pygame.event.get():  
 			if event.type == pygame.QUIT:
 				running = False
 				return
+		while timer > screen.fixed_fps:
+			fixed_update()
+			timer -= screen.fixed_fps
+		update()
 		screen.clock.tick(screen.fps)
 		timer += delta_time()
 	pygame.quit()

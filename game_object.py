@@ -60,7 +60,7 @@ class GameObject():
 			name = script.rsplit(".", 1)[1]	
 			self.package_instances.append(tempInst)
 			setattr(self, name, tempInst)
-		self.start()
+	
 		
 	def start(self):
 		"""Initializes the sprite as an object and imports all packages needed. And calls the start funtions for them."""
@@ -155,7 +155,6 @@ class GameObject():
 			  
 		mod_name, func_name = string_name.rsplit(".", 1)
 		mod = __import__(mod_name)
-
 		for i in mod_name.split(".")[1:]:
 			mod = getattr(mod, i)
 		return getattr(mod, func_name)
