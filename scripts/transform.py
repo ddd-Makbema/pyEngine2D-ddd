@@ -8,11 +8,12 @@ class Transform:
 	and changing attributes of that image."""
 	def __init__(self, game_object):
 		self.game_object = game_object
-		self.transform = [0,0]
+		self.transform = [-1,-1]
 		self.scale = [1,1]
 		self.rotation = 0
 		self.last_scale = [-1,-1]
 		self.last_parent_scale = [-1,-1]
+		self.center = [0,0]
 	
 	def start(self):
 		self.size = [self.game_object.image_start.get_width(), self.game_object.image_start.get_height()]
@@ -25,6 +26,7 @@ class Transform:
 
 		rotate_trans = self._rotate_transform(self.game_object.parent_instance.Transform.rotation, 
 			self.transform[0]*self.game_object.parent_instance.Transform.scale[0], self.transform[1]*self.game_object.parent_instance.Transform.scale[1])
+		self.center = rotate_trans
 		return rotate_trans
 			
 	def _scale(self):
