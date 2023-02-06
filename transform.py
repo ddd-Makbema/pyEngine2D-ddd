@@ -8,7 +8,7 @@ class Transform:
 	and changing attributes of that image."""
 	def __init__(self, game_object):
 		self.game_object = game_object
-		self.transform = [0,0]
+		self.transform = [-1,-1]
 		self.scale = [1,1]
 		self.rotation = 0
 		self.last_scale = [-1,-1]

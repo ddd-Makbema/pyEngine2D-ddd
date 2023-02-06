@@ -25,10 +25,16 @@ def update():
 		object.update()			
 	#loads the images onto the screen accounting for transform
 	for object in GameObject.INSTANCES:
-		object_transform = object.Transform.load.get_rect(
-			center = object.Transform.parent_transform())
-			
-		screen.screen.blit(object.Transform.load, object_transform)
+		try:
+			object_transform = object.Transform.load.get_rect(
+				center = object.Transform.parent_transform())
+			screen.screen.blit(object.Transform.load, object_transform)
+		except AttributeError as e:
+			if "no attribute 'Transform'" not in str(e):
+				raise e
+			else:
+				center = [-1,-1]
+				screen.screen.blit(object.image_start, center)
 	screen.frame_end()  
 
 def fixed_update():

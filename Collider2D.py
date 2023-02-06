@@ -1,4 +1,5 @@
 from game_object import GameObject
+from itertools import combinations
 import math
 import pygame
 
@@ -6,11 +7,22 @@ class CollisionHandler():
     """Top level class to hold main methods and attributes for colliders. 
     Each child class will contain methods to determine if two game objects are touching."""
     ALL_COLLIDERS = []
+    def __init__(self, game_object):
+        self.prev_colliders = ["a", "b", "c"]
+    def start(self):
+        self.colliderPairs = list(combinations(CollisionHandler.ALL_COLLIDERS, 2))
 
-    def fixed_update():
-        for i in CollisionHandler.ALL_COLLIDERS:
-            pass
+    def fixed_update(self):
+        if CollisionHandler.ALL_COLLIDERS != self.prev_colliders:
+            self.colliderPairs = list(combinations(CollisionHandler.ALL_COLLIDERS, 2))
+            self.prev_colliders = CollisionHandler.ALL_COLLIDERS
+            print(self.colliderPairs)
         
+        for i in self.colliderPairs:
+            line = [i[0].collider_transform, i[1].collider_transform]
+            
+
+
 
 class RectangleCollider2D():
     def __init__(self, game_object):
@@ -28,6 +40,7 @@ class RectangleCollider2D():
         self.collider_size_orig = [0,0]
         self.rotation_prev = 1000
         self.prev_t_scale = [-1,-1]
+        self.axis_amount = 2
 
     def start(self):
         self.fixed_update()
@@ -45,18 +58,6 @@ class RectangleCollider2D():
         if self._is_update():
             self.collider_size[0] = self.collider_size_orig[0] * self.game_object.Transform.scale[0]
             self.collider_size[1] = self.collider_size_orig[1] * self.game_object.Transform.scale[1]
-            oX = self.collider_size[0] / 2
-            oY = self.collider_size[1] / 2
-            top_right = [oX, oY]
-            top_left = [-oX, oY]
-            bottom_right = [oX, -oY]
-            bottom_left = [-oX, -oY]
-
-            print("check")
-            self.top_right = self._get_final_cords(top_right)
-            self.top_left = self._get_final_cords(top_left)
-            self.bottom_left = self._get_final_cords(bottom_left)
-            self.bottom_right = self._get_final_cords(bottom_right)
            
             self.collider_transform_prev = self.collider_transform
             self.collider_size_prev = self.collider_size
