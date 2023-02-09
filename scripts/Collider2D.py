@@ -9,6 +9,8 @@ class CollisionHandler():
     ALL_COLLIDERS = []
     def __init__(self, game_object):
         self.prev_colliders = ["a", "b", "c"]
+        self.game_object = game_object
+        self.smallest_vertex = [[0,0], [1,1]]
     def start(self):
         self.colliderPairs = list(combinations(CollisionHandler.ALL_COLLIDERS, 2))
 
@@ -16,12 +18,48 @@ class CollisionHandler():
         if CollisionHandler.ALL_COLLIDERS != self.prev_colliders:
             self.colliderPairs = list(combinations(CollisionHandler.ALL_COLLIDERS, 2))
             self.prev_colliders = CollisionHandler.ALL_COLLIDERS
-            print(self.colliderPairs)
         
         for i in self.colliderPairs:
             line = [i[0].collider_transform, i[1].collider_transform]
-            
+            vertex = self._get_axis(i)
 
+        '''
+        get closest vertexes
+        for each axis:
+            grab that axis amount in l
+            add the width of the square got the axis from
+            add each of the width and height of other square
+            check if rightmost point of left is > leftmost point of right 
+        '''
+    def update(self):
+        self.draw_collider()
+
+    def _get_axis(self, colliders):
+        self.smallest_dist = 999999999999
+        for vertex in colliders[0].verticies:
+            for vertex2 in colliders[1].verticies:
+                dist = math.sqrt(((vertex[0] - vertex2[0])**2) + ((vertex[1] - vertex2[1])**2))
+                if dist < self.smallest_dist:
+                    self.smallest_dist = dist
+                    self.smallest_vertex = [vertex, vertex2]
+        return self.smallest_vertex
+
+                    
+    def draw_collider(self, color=(0,0,0)):
+        for object in CollisionHandler.ALL_COLLIDERS:
+            collider = pygame.Surface(object.collider_size).convert_alpha()
+            collider = pygame.transform.rotate(collider, object.game_object.Transform.rotation)
+            object_transform = collider.get_rect(
+		    	center = object.game_object.Transform.center)
+            self.game_object.screen.blit(collider, object_transform)
+
+            for v in object.get_verticies():
+                pygame.draw.circle(object.game_object.screen, (255,255,0), v, 3)
+            for x in self.smallest_vertex:
+                pygame.draw.circle(self.game_object.screen, (255,0,0), x, 3)
+            pass
+        
+        
 
 
 class RectangleCollider2D():
@@ -53,27 +91,44 @@ class RectangleCollider2D():
                         return False
         return True  
 
+
     def fixed_update(self):
         self.collider_transform = [self.game_object.Transform.transform[0], self.game_object.Transform.transform[1]]
         if self._is_update():
             self.collider_size[0] = self.collider_size_orig[0] * self.game_object.Transform.scale[0]
             self.collider_size[1] = self.collider_size_orig[1] * self.game_object.Transform.scale[1]
-           
             self.collider_transform_prev = self.collider_transform
             self.collider_size_prev = self.collider_size
             self.prev_t_scale = self.game_object.Transform.scale
             self.rotation_prev = self.game_object.Transform.rotation
+            self.verticies = self.get_verticies()
   
     def get_verticies(self):
-        return [self.top_right, self.top_left, self.bottom_right, self.bottom_left]
+        """returns vertecies of the collider using the center point and width -
+        [topleft, topright, bottomleft, bottomright]"""
+        vertex = [0,1,2,3]
+        rot_x = [0,1,2,3]
+        rot_y = [0,1,2,3]
         
-    def draw_collider(self, color=(0,0,0)):
-        collider = pygame.Surface(self.collider_size).convert_alpha()
-        collider = pygame.transform.rotate(collider, self.game_object.Transform.rotation)
-        object_transform = collider.get_rect(
-			center = self.game_object.Transform.center)
-        self.game_object.screen.blit(collider, object_transform)
-        pass
+        cos_rot = math.cos(math.radians(-self.game_object.Transform.rotation))
+        sin_rot = math.sin(math.radians(-self.game_object.Transform.rotation))
+
+        rot_x[0] = (self.collider_size[0]/2) * cos_rot - (self.collider_size[1]/2) * sin_rot
+        rot_x[1] = (self.collider_size[0]/2) * cos_rot - (-self.collider_size[1]/2) * sin_rot
+        rot_x[2] = (-self.collider_size[0]/2) * cos_rot - (self.collider_size[1]/2) * sin_rot
+        rot_x[3] = (-self.collider_size[0]/2) * cos_rot - (-self.collider_size[1]/2) * sin_rot
+       
+        rot_y[0] = (self.collider_size[1]/2) * sin_rot + (self.collider_size[0]/2) * cos_rot
+        rot_y[1] = (self.collider_size[1]/2) * sin_rot + (-self.collider_size[0]/2) * cos_rot
+        rot_y[2] = (-self.collider_size[1]/2) * sin_rot + (self.collider_size[0]/2) * cos_rot
+        rot_y[3] = (-self.collider_size[1]/2) * sin_rot + (-self.collider_size[0]/2) * cos_rot
+        
+        vertex[0] = [self.collider_transform[0] + rot_x[0], self.collider_transform[1] + rot_y[0]]
+        vertex[1] = [self.collider_transform[0] + rot_x[1], self.collider_transform[1] + rot_y[1]]
+        vertex[2] = [self.collider_transform[0] + rot_x[2], self.collider_transform[1] + rot_y[2]]
+        vertex[3] = [self.collider_transform[0] + rot_x[3], self.collider_transform[1] + rot_y[3]]
+        return vertex
+        
 
     def set_collider_size(self, size):
         self.collider_size_orig = size
@@ -86,30 +141,28 @@ class RectangleCollider2D():
 
 
     
-class CircleCollider2D():
-    def __init__(self, game_object):
-        self.game_object = game_object
-        self.is_trigger = False
-        self.collider_type = ""
-        super().__init__(self, game_object)
-        CollisionHandler.ALL_COLLIDERS.append(self)
-        self.collider_transform = [self.game_object.Transform.transform[0], self.game_object.Transform.transform[1]]
-        self.collider_size = [self.game_object.Transform.final_scale[0], self.game_object.Transform.final_scale[1]]
-        self.scale = [1,1,1,1] #[top, bottom, right, left]
+# class CircleCollider2D():
+#     def __init__(self, game_object):
+#         self.game_object = game_object
+#         self.is_trigger = False
+#         self.collider_type = ""
+#         super().__init__(self, game_object)
+#         CollisionHandler.ALL_COLLIDERS.append(self)
+#         self.collider_transform = [self.game_object.Transform.transform[0], self.game_object.Transform.transform[1]]
+#         self.collider_size = [self.game_object.Transform.final_scale[0], self.game_object.Transform.final_scale[1]]
+#         self.scale = [1,1,1,1] #[top, bottom, right, left]
     
-    def get_verticies(self):
-        return [self.center]
 
-    def fixed_update(self):
-        if self.collider_size != self.collider_size_prev or self.collider_transform != self.collider_transform_prev:
-            self.center = self.collider_transform
-            self.collider_transform_prev = self.collider_transform
-            self.collider_size_prev = self.collider_size
+#     def fixed_update(self):
+#         if self.collider_size != self.collider_size_prev or self.collider_transform != self.collider_transform_prev:
+#             self.center = self.collider_transform
+#             self.collider_transform_prev = self.collider_transform
+#             self.collider_size_prev = self.collider_size
 
 
-class SpriteColliderConvexPoly2D():
-    def get_verticies(self):
-        return self.verticies
+# class SpriteColliderConvexPoly2D():
+#     def get_verticies(self):
+#         return self.verticies
 
 
 '''
