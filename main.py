@@ -10,9 +10,6 @@ start_time = time.time()
 
 list_load_game_object = []
 
-#init all game objects
-
-
 
 
 def update():
