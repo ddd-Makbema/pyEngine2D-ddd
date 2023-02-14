@@ -11,6 +11,8 @@ class CollisionHandler():
         self.prev_colliders = ["a", "b", "c"]
         self.game_object = game_object
         self.smallest_vertex = [[0,0], [1,1]]
+        self.l1 = [[0,0], [1,1]]
+        self.l2 = [[0,0], [1,1]]
     def start(self):
         self.colliderPairs = list(combinations(CollisionHandler.ALL_COLLIDERS, 2))
 
@@ -20,16 +22,22 @@ class CollisionHandler():
             self.prev_colliders = CollisionHandler.ALL_COLLIDERS
         
         for i in self.colliderPairs:
-            line = [i[0].collider_transform, i[1].collider_transform]
+            # line = [i[0].collider_transform, i[1].collider_transform]
             vertex = self._get_axis(i)
+            self.l1 = [i[0].collider_transform, vertex[0]]
+            self.l2 = [i[1].collider_transform, vertex[1]]
 
         '''
         get closest vertexes
+        draw line from center to vertex
         for each axis:
-            grab that axis amount in l
-            add the width of the square got the axis from
-            add each of the width and height of other square
-            check if rightmost point of left is > leftmost point of right 
+            flatten line to that axis 
+            check for overlaps for the lines 
+            if yes then break:
+                collision
+            else:
+                keep going    
+            
         '''
     def update(self):
         self.draw_collider()
@@ -57,6 +65,8 @@ class CollisionHandler():
                 pygame.draw.circle(object.game_object.screen, (255,255,0), v, 3)
             for x in self.smallest_vertex:
                 pygame.draw.circle(self.game_object.screen, (255,0,0), x, 3)
+            pygame.draw.line(self.game_object.screen, (0,0,255), self.l1[0], self.l1[1])
+            pygame.draw.line(self.game_object.screen, (0,0,255), self.l2[0], self.l2[1])
             pass
         
         
@@ -201,3 +211,6 @@ which is equivalent to
 | T • L | > | ( WA*Ax ) • L | + | ( HA*Ay ) • L | + | ( WB*Bx ) • L | + |( HB*By ) • L |
 where | s | denotes the absolute value of scalar s
 '''
+
+
+#potential efficiency: only check collisions for moving objects and make pairs a set not a list 
