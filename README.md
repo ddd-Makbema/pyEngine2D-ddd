@@ -10,18 +10,26 @@ A game engine built using pygame based off of the Unity game engine.
 pip install pygame
 ```
 2: Go to variables.py and make a [screen object](ScreenInit.md)
+
 	go below to see examples of how to do this
+	
 	Save the screen as "screen"
+	
 
 3: Initialize all the [game objects](game%20objects.md) you want underneath the screen in variables.py
+
 	To set attributes for user-made scripts call the game object from the dictionary then follow the path to the attribute
 
 4: Load all media(images, sound, etc) into the "data" folder  
 
 5: Write the main game code into ".py" files in the "scripts/user" folder
+
 	there are two folders in scripts; "user" and "builtins" you only need to look at user
+	
   	a sample file is provided in the script/user folder already
+	
  	make sure to load all the packages you want by naming the file and class name at the end of the game object declaration
+	
   
 6: Finally run the "main.py" file to run the game
 ## Code Samples
