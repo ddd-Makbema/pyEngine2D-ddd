@@ -55,8 +55,9 @@ class GameObject():
 
 		#initializes the packages for the game object
 		for script in self.packages:
-			full_module_name = "scripts." + script
-			tempInst = self._import_class_from_string(full_module_name)(self)
+			full_module_name = "scripts." + "builtins." + script
+			user_module_name = "scripts." + "user." + script
+			tempInst = self._import_class_from_string(full_module_name, user_module_name)(self)
 			name = script.rsplit(".", 1)[1]	
 			self.package_instances.append(tempInst)
 			setattr(self, name, tempInst)
@@ -148,17 +149,22 @@ class GameObject():
 
 		return
 	
-	def _import_class_from_string(self, string_name):
+	def _import_class_from_string(self, string_name, name_secondary):
 		"""Given a string like 'module.submodule.func_name' which refers to a 	function, return that function so it can be called
  		Returns:
   			instance of the package imported from the string"""
-			  
-		mod_name, func_name = string_name.rsplit(".", 1)
-		mod = __import__(mod_name)
-		for i in mod_name.split(".")[1:]:
-			mod = getattr(mod, i)
-		return getattr(mod, func_name)
-
+		try:
+			mod_name, func_name = string_name.rsplit(".", 1)
+			mod = __import__(mod_name)
+			for i in mod_name.split(".")[1:]:
+				mod = getattr(mod, i)
+			return getattr(mod, func_name)
+		except ModuleNotFoundError as e:
+			mod_name, func_name = name_secondary.rsplit(".", 1)
+			mod = __import__(mod_name)
+			for i in mod_name.split(".")[1:]:
+				mod = getattr(mod, i)
+			return getattr(mod, func_name)
 def _pyLoad(sprite_to_load):
 	"""Shorter function to load and return a pygame image type variable while 
  		also calling a more descriptive exception if the sprite doesn't exist."""

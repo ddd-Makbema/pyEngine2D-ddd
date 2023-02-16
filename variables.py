@@ -1,6 +1,5 @@
 from game_object import GameObject as GO
 from screen_init import ScreenInit
-from scripts.Collider2D import CollisionHandler
 
 
 screen = ScreenInit(360,480, 60, 100, "sam katz.jpg", "MyGame")
