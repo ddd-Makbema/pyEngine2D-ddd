@@ -1,4 +1,8 @@
+# for macs
+.DS_Store
+# vscode config
 .vscode/
+
 __pycache__/
 __pycache__
 # Byte-compiled / optimized / DLL files
