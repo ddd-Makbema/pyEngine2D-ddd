@@ -12,5 +12,6 @@ class PlayerMovement:
 		pass
 	def update(self):
 		pass
+
 if __name__ == '__main__':
     pass
