@@ -15,11 +15,11 @@ list_load_game_object = []
 def update():
 	"""Renders the screen fps times a second."""
 	screen.screen.fill(screen.green)
-	for event in pygame.event.get():
+	for event in pygame.event.get():   
 		if event.type == pygame.QUIT:
 			running = False
 	for object in GameObject.INSTANCES:
-		object.update()
+		object.update()			
 	#loads the images onto the screen accounting for transform
 	for object in GameObject.INSTANCES:
 		try:
@@ -32,7 +32,7 @@ def update():
 			else:
 				center = [-1,-1]
 				screen.screen.blit(object.image_start, center)
-	screen.frame_end()
+	screen.frame_end()  
 
 def fixed_update():
 	"""calls the fixed update function at set times per second. Independent from update"""
@@ -52,7 +52,7 @@ def game_loop():
 	for object in GameObject.INSTANCES:
 		object.start()
 	while running:
-		for event in pygame.event.get():
+		for event in pygame.event.get():  
 			if event.type == pygame.QUIT:
 				running = False
 				return
@@ -64,7 +64,7 @@ def game_loop():
 		timer += delta_time()
 	pygame.quit()
 	return
-
+	
 game_loop()
 
 pygame.quit()
