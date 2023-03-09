@@ -26,66 +26,29 @@ class CollisionHandler():
             vertex = self._get_axis(i)
             self.l1 = [i[0].collider_transform, vertex[0]]
             self.l2 = [i[1].collider_transform, vertex[1]]
+            line1 = self.l1[0]
+            line2 = self.l2[0]
             colliding = True
-            rot_1 = (math.cos(math.radians(i[0].game_object.Transform.rotation)))
-            rot_2 = (math.cos(math.radians(i[1].game_object.Transform.rotation)))
-            translated_coords = [
-                    [
-                    [self.l1[0][0]*rot_1, self.l1[0][1]*rot_1], #center 1
-                    [self.l1[1][0]*rot_1, self.l1[1][1]*rot_1], #vertex 1
-                    [self.l2[0][0]*rot_1, self.l2[0][1]*rot_1], #center 2
-                    [self.l2[1][0]*rot_1, self.l2[1][1]*rot_1], #vertex 2
-                    ],  [
-                    [self.l1[0][0]*rot_2, self.l1[0][1]*rot_2], 
-                    [self.l1[1][0]*rot_2, self.l1[1][1]*rot_2],
-                    [self.l2[0][0]*rot_2, self.l2[0][1]*rot_2],
-                    [self.l2[1][0]*rot_2, self.l2[1][1]*rot_2],
-                    ]
-                ]
-            for cord_set in translated_coords:
-                if self._check_collision(cord_set):
-                    self._call_collisions(i)
-                    print("colliding")
-                    return
-            print("not colliding")
-                        
+            for z in range(i[0].axis_amount + i[1].axis_amount):
+                if not ((line2[0] <= line1[1] and line2[0] >=line1[1]) or (line1[0] <=line2[1] and line1[1] >= line2[0])):
+                    colliding = False
+
+
+
+        '''
+        get closest vertexes
+        draw line from center to vertex
+        for each axis:
+            flatten line to that axis 
+            check for overlaps for the lines 
+            if yes then break:
+                collision
+            else:
+                keep going    
+            
+        '''
     def update(self):
         self.draw_collider()
-
-    def _check_collision(self, cords):
-        '''
-            [self.l1[0][0]*rot_1, self.l1[0][1]*rot_1], #center 1
-            [self.l1[1][0]*rot_1, self.l1[1][1]*rot_1], #vertex 1
-            [self.l2[0][0]*rot_1, self.l2[0][1]*rot_1], #center 2
-            [self.l2[1][0]*rot_1, self.l2[1][1]*rot_1], #vertex 2
-        '''
-        print("X = ")
-        print((int(cords[2][0]) in range(int(cords[1][0]), int(cords[0][0]))))
-        print(int(cords[2][0]))
-        print(int(cords[0][0]))
-        print(int(cords[1][0]))
-        print("`````````````````````````````````````````````````````")
-        print("Y = ")
-        print((int(cords[3][1]) in range(int(cords[1][1]), int(cords[0][1]))))
-        print(int(cords[3][1]))
-        print(int(cords[0][1]))
-        print(int(cords[1][1]))
-        print("`````````````````````````````````````````````````````")
-        
-
-       
-        if (int(cords[2][0]) in range(int(cords[0][0]), int(cords[1][0])) and int(cords[2][1]) in range(int(cords[0][1]), int(cords[1][1]))
-        and int(cords[3][0]) in range(int(cords[0][0]), int(cords[1][0])) and int(cords[3][1]) in range(int(cords[0][1]), int(cords[1][1]))):
-            return True
-        elif (int(cords[2][0]) in range(int(cords[1][0]), int(cords[0][0])) and int(cords[2][1]) in range(int(cords[1][1]), int(cords[0][1]))
-        and int(cords[3][0]) in range(int(cords[1][0]), int(cords[0][0])) and int(cords[3][1]) in range(int(cords[1][1]), int(cords[0][1]))):
-            return True
-        else:
-            return False
-
-    def _call_collisions(self, colliders):
-        pass
-
 
     def _get_axis(self, colliders):
         self.smallest_dist = 999999999999
@@ -112,8 +75,6 @@ class CollisionHandler():
                 pygame.draw.circle(self.game_object.screen, (255,0,0), x, 3)
             pygame.draw.line(self.game_object.screen, (0,0,255), self.l1[0], self.l1[1])
             pygame.draw.line(self.game_object.screen, (0,0,255), self.l2[0], self.l2[1])
-
-            pygame.draw.circle(self.game_object.screen, (255,0,0), self.l2[0], 5)
             pass
         
         
@@ -198,33 +159,23 @@ class RectangleCollider2D():
 
 
     
-class CircleCollider2D():
-    def __init__(self, game_object):
-        self.game_object = game_object
-        self.is_trigger = False
-        self.collider_type = ""
-        super().__init__(self, game_object)
-        CollisionHandler.ALL_COLLIDERS.append(self)
-        self.collider_transform = [self.game_object.Transform.transform[0], self.game_object.Transform.transform[1]]
-        self.collider_size = [(self.game_object.Transform.final_scale[0] + self.game_object.Transform.final_scale[1])/2]
-        self.scale = [1] #[top, bottom, right, left]
+# class CircleCollider2D():
+#     def __init__(self, game_object):
+#         self.game_object = game_object
+#         self.is_trigger = False
+#         self.collider_type = ""
+#         super().__init__(self, game_object)
+#         CollisionHandler.ALL_COLLIDERS.append(self)
+#         self.collider_transform = [self.game_object.Transform.transform[0], self.game_object.Transform.transform[1]]
+#         self.collider_size = [self.game_object.Transform.final_scale[0], self.game_object.Transform.final_scale[1]]
+#         self.scale = [1,1,1,1] #[top, bottom, right, left]
     
-    def start(self):
-        self.fixed_update()
 
-    def _is_update(self):
-        if self.collider_size == self.collider_size_prev:
-            if self.collider_transform == self.collider_transform_prev:
-                if self.game_object.Transform.scale == self.prev_t_scale:
-                    if self.rotation_prev == self.game_object.Transform.rotation:   
-                        return False
-        return True  
-
-    def fixed_update(self):
-        if self.collider_size != self.collider_size_prev or self.collider_transform != self.collider_transform_prev:
-            self.center = self.collider_transform
-            self.collider_transform_prev = self.collider_transform
-            self.collider_size_prev = self.collider_size
+#     def fixed_update(self):
+#         if self.collider_size != self.collider_size_prev or self.collider_transform != self.collider_transform_prev:
+#             self.center = self.collider_transform
+#             self.collider_transform_prev = self.collider_transform
+#             self.collider_size_prev = self.collider_size
 
 
 # class SpriteColliderConvexPoly2D():
@@ -271,5 +222,3 @@ where | s | denotes the absolute value of scalar s
 
 
 #potential efficiency: only check collisions for moving objects and make pairs a set not a list 
-
-# add bounding circle check at start
