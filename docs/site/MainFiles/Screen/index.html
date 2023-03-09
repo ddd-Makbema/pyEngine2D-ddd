@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Screen - pyEngine documentation</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Screen";
+        var mkdocs_page_input_path = "MainFiles/Screen.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <script src="../../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> pyEngine documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">pyEngine2D</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../Definitions/">Definitions</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Builtins</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Builtins/RigidBody2D/">RigidBody2D</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Builtins/Transform/">Transform</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">Collisions</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../Builtins/Collisions/Colliders2D/">Colliders2D</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../Builtins/Collisions/CollisionHandler/">CollisionHandler</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">MainFiles</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../Exceptions/">Exceptions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../GameLoop/">Main Game Loop</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Screen</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#attributes">Attributes</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#functions">Functions</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#useage">Useage</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../Variables/">Variables</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">GameObject</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../GameObject/GameObject/">Game Object</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">Attributes</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="#">ClassAttributes</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../GameObject/Attributes/ClassAttributes/GAME_OBJECTS/">GAME OBJECTS</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../GameObject/Attributes/ClassAttributes/INSTANCES/">INSTANCES</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../GameObject/Attributes/ClassAttributes/NAMES/">NAMES</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="#">InstanceAttributes</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../GameObject/Attributes/InstanceAttributes/packages/">Packages</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../GameObject/Attributes/InstanceAttributes/parent/">Parent</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../GameObject/Attributes/InstanceAttributes/sprite/">Sprite</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">Methods</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../GameObject/Methods/PackageFunctionCalls/">PackageFunctionCalls</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../GameObject/Methods/TimedFunctionCalls/">TimedFunctionCalls</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Tutorial</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Tutorial/Introduction/">Introduction</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">pyEngine documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+          <li>MainFiles &raquo;</li>
+      <li>Screen</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="screen">Screen</h1>
+<p>Starts the screen for the game and initializes default variables.</p>
+<h2 id="attributes">Attributes</h2>
+<table>
+<thead>
+<tr>
+<th>attribute</th>
+<th>discription</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>width</td>
+<td>The width in pixels of the game screen by default. It can be still set to fullscreen</td>
+</tr>
+<tr>
+<td>height</td>
+<td>The height in pixels of the game screen by default. It can still be set to fullscreen</td>
+</tr>
+<tr>
+<td>fixed_fps/ffps</td>
+<td>How fast the physics updates. will remain eventually consistent no matter the speed of the computer</td>
+</tr>
+<tr>
+<td>fps</td>
+<td>How fast the screen updates. Can be variable but aims for the set amount</td>
+</tr>
+<tr>
+<td>name_window</td>
+<td>The name displayed at the top of the screen and in the taskbar</td>
+</tr>
+<tr>
+<td>icon</td>
+<td>Image from the data folder displayed at the top left of the window. does not change the image in the taskbar</td>
+</tr>
+<tr>
+<td>screen</td>
+<td>Instance of the screen loaded from pygame</td>
+</tr>
+<tr>
+<td>clock</td>
+<td>Instance of the clock class loaded from pygame allows fps monitering</td>
+</tr>
+<tr>
+<td>start_velocity</td>
+<td>default value of (0,0) to put in for velocity</td>
+</tr>
+<tr>
+<td>white</td>
+<td>rgb value for white to easily color shapes or fill the backround of the screen with</td>
+</tr>
+<tr>
+<td>black</td>
+<td>same but for black</td>
+</tr>
+<tr>
+<td>red</td>
+<td>same but for red</td>
+</tr>
+<tr>
+<td>green</td>
+<td>same but for green</td>
+</tr>
+<tr>
+<td>blue</td>
+<td>same but for blue</td>
+</tr>
+</tbody>
+</table>
+<h2 id="functions">Functions</h2>
+<p>frame_end: Updates the screen for the new frame</p>
+<h2 id="useage">Useage</h2>
+<p>Users should not have to touch the frame_end function. <br />
+Users shold, though, feel free to access the Screen class when adding basic shapes to the screen and accessing the colors.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../GameLoop/" class="btn btn-neutral float-left" title="Main Game Loop"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Variables/" class="btn btn-neutral float-right" title="Variables">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../GameLoop/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../Variables/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme_extra.js" defer></script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
