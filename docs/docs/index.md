@@ -10,7 +10,7 @@ These docs are orginized into general folders of topics such as the physics engi
 
 ```bash
 pip install pygame
-```
+``` 
 2: look at [Variables](MainFiles/Variables.md) to see the basics of how to initialize game objects <br />
 3: learn how to write scripts, add media and initialize game objects by making a basic pong game in the [Tutorial](Tutorial/Introduction.md)<br />
 4: for indepth descriptions of how the engine works look at [MainFiles](MainFiles/GameLoop.md)

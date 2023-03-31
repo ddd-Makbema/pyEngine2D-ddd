@@ -13,6 +13,7 @@ Where the game is rendered<br />
 ### Transform
 Attributes
 ### Parent
+Larger definition found in [parent](../../MainFiles/GameObject/Attributes/InstanceAttributes/Parent)
 Set as the origin for where the image is rendered<br />
 multiplies the scale by the parent's scale<br />
 adds the rotation to the parent's rotation<br />
@@ -27,4 +28,6 @@ Fps is how fast the updates happen
 Will be ran a set amount of times a second. <br />
 Good for physics and computations where you<br />
 do not want everything to go super speedy if <br />
-someone is using a faster computer  
+someone is using a faster computer
+### Physics Frame
+Based off of the fixed fps, can run multiple times before the next frame is ran to catch up, used to make sure physics is consistent between machines with different hardware speeds.

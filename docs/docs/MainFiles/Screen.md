@@ -23,7 +23,7 @@ Starts the screen for the game and initializes default variables.
 
 frame_end: Updates the screen for the new frame
 
-## Useage
+## Usage
 
 Users should not have to touch the frame_end function. <br />
 Users shold, though, feel free to access the Screen class when adding basic shapes to the screen and accessing the colors.
