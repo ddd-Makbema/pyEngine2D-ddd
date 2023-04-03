@@ -5,15 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <link rel="shortcut icon" href="../../../../../img/favicon.ico" />
-    <title>Packages - pyEngine documentation</title>
+    <title>Packages and Scripts - pyEngine documentation</title>
     <link rel="stylesheet" href="../../../../../css/theme.css" />
     <link rel="stylesheet" href="../../../../../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Packages";
-        var mkdocs_page_input_path = "MainFiles/GameObject/Attributes/InstanceAttributes/packages.md";
+        var mkdocs_page_name = "Packages and Scripts";
+        var mkdocs_page_input_path = "MainFiles\\GameObject\\Attributes\\InstanceAttributes\\packages.md";
         var mkdocs_page_url = null;
       </script>
     
@@ -79,23 +79,13 @@
                 </li>
                 <li class="toctree-l2 current"><a class="reference internal current" href="#">Attributes</a>
     <ul class="current">
-                <li class="toctree-l3"><a class="reference internal" href="#">ClassAttributes</a>
-    <ul>
-                <li class="toctree-l4"><a class="reference internal" href="../../ClassAttributes/GAME_OBJECTS/">GAME OBJECTS</a>
-                </li>
-                <li class="toctree-l4"><a class="reference internal" href="../../ClassAttributes/INSTANCES/">INSTANCES</a>
-                </li>
-                <li class="toctree-l4"><a class="reference internal" href="../../ClassAttributes/NAMES/">NAMES</a>
-                </li>
-    </ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../classAttributes/">GAME_OBJECTS INSTANCES and NAMES</a>
                 </li>
                 <li class="toctree-l3 current"><a class="reference internal current" href="#">InstanceAttributes</a>
     <ul class="current">
-                <li class="toctree-l4 current"><a class="reference internal current" href="./">Packages</a>
+                <li class="toctree-l4 current"><a class="reference internal current" href="./">Packages and Scripts</a>
                 </li>
                 <li class="toctree-l4"><a class="reference internal" href="../parent/">Parent</a>
-                </li>
-                <li class="toctree-l4"><a class="reference internal" href="../sprite/">Sprite</a>
                 </li>
     </ul>
                 </li>
@@ -103,9 +93,9 @@
                 </li>
                 <li class="toctree-l2"><a class="reference internal" href="#">Methods</a>
     <ul>
-                <li class="toctree-l3"><a class="reference internal" href="../../../Methods/PackageFunctionCalls/">PackageFunctionCalls</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../../Methods/PackageFunctionCalls/">Package Method Calls</a>
                 </li>
-                <li class="toctree-l3"><a class="reference internal" href="../../../Methods/TimedFunctionCalls/">TimedFunctionCalls</a>
+                <li class="toctree-l3"><a class="reference internal" href="../../../Methods/TimedFunctionCalls/">Timed events</a>
                 </li>
     </ul>
                 </li>
@@ -114,7 +104,11 @@
               </ul>
               <p class="caption"><span class="caption-text">Tutorial</span></p>
               <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../../../../../Tutorial/Introduction/">Introduction</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../../Tutorial/Introduction/">Tutorial</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../../Tutorial/LoadingAndInstantiating/">Loading and Instantiating the game object</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../../Tutorial/MakingAScript/">Making a script</a>
                   </li>
               </ul>
       </div>
@@ -135,7 +129,7 @@
           <li>GameObject &raquo;</li>
           <li>Attributes &raquo;</li>
           <li>InstanceAttributes &raquo;</li>
-      <li>Packages</li>
+      <li>Packages and Scripts</li>
     <li class="wy-breadcrumbs-aside">
     </li>
   </ul>
@@ -144,12 +138,43 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                
+                <h1 id="packages-and-scripts">Packages and Scripts</h1>
+<p>These will be how the main code that the user writes will be called. <br /></p>
+<p>in the init function, it will import the scripts requested by the user, when instantiating the game object. It will then make two versions of the string, one that has the builtins folder in scripts as the destination adn one with the user folder. then it calls _import_class_from_string to get an instance of that class. it then will add that instance to the <strong>package_instances</strong> attribute, which are used for every method call. When calling a method, for example the update method, it will iterate through everything in <strong>package_instances</strong> and try to call the update method in the script. the script does not need to have an update method and if it doesn't, then nothing happens and it will carry on without errors. </p>
+<pre><code class="language-python">for p in self.package_instances:
+    try:
+        p.update()
+    except AttributeError as e:
+        if &quot;object has no attribute 'update'&quot; in str(e):
+            pass
+
+        else:
+            raise e
+</code></pre>
+<h2 id="making-a-new-script">Making a new script</h2>
+<p>Inside the scripts folder, there is a folder called "user." make a new python file called whatever you want and make a new class in it. It is possible to have multiple classes in the same file like with collisions, where all the collider and collision handler classes are in one file but can be independently put on to different game objects. <br /></p>
+<p>Inside the new class, the init method requires two arguments, self and game_object. Self is self-explanatory. game_object is parsed in when the class is instantiated by each instance of game object. This is to allow you to check and change attributes in the game object itself as well as in other scripts attached to the game object. </p>
+<pre><code class="language-python">#calling the image_start attribute from the game object instance that has this instance of Transform. 
+self.game_object.image_start
+</code></pre>
+<p>To recive events, there are builtin and user made (not added yet) events that are called by the game object for every attached script. One example is the update function which is called once a frame. When it is called, the main game loop calls the update function for every game object, which then calls the update function for each attached script. More indepth descriptions of the possible events are elsewhere in the documentation. <br />
+When adding these functions only pass in self as an argument and make sure the method name is spelled correctly. </p>
+<pre><code class="language-python">def update(self):
+    self.load = self._f_scale()
+</code></pre>
+<h2 id="adding-the-script-to-different-game-objects">Adding the script to different game objects.</h2>
+<p>When first instantiating any game object, there are an indeterminate amount of packages that can be added. After the "parent" argument, the rest of the instantiation can be used for the packages. When naming the script it is only required to call the name of the file and the name of the class, not the full file path.<br /></p>
+<pre><code class="language-python">GO(&quot;katz&quot;, screen.screen, &quot;null.png&quot;, &quot;origin&quot;, &quot;transform.Transform&quot;, &quot;Collider2D.RectangleCollider2D&quot;, &quot;player_movement.PlayerMovement&quot;)
+</code></pre>
+<p>Once it is instantiated, the script's instance is set as an attribute for the game object with the name being the name of the class.<br />
+As stated above, this will only pass in self and game_object. To pass in additional arguments, you need to call the instance of the class and individually set each attribute. This is also where the <strong>GAME_OBJECTS</strong> class attribute comes in, because to call each game object, you just call the name input earlier as the key for the dictionary. </p>
+<pre><code class="language-python">GO.GAME_OBJECTS[&quot;katz&quot;].Transform.rotation = 0
+</code></pre>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../../ClassAttributes/NAMES/" class="btn btn-neutral float-left" title="NAMES"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../classAttributes/" class="btn btn-neutral float-left" title="GAME_OBJECTS INSTANCES and NAMES"><span class="icon icon-circle-arrow-left"></span> Previous</a>
         <a href="../parent/" class="btn btn-neutral float-right" title="Parent">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
@@ -173,7 +198,7 @@
   <span class="rst-current-version" data-toggle="rst-current-version">
     
     
-      <span><a href="../../ClassAttributes/NAMES/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../../classAttributes/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
       <span><a href="../parent/" style="color: #fcfcfc">Next &raquo;</a></span>

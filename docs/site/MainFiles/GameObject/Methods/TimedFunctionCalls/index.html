@@ -5,15 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <link rel="shortcut icon" href="../../../../img/favicon.ico" />
-    <title>TimedFunctionCalls - pyEngine documentation</title>
+    <title>Timed events - pyEngine documentation</title>
     <link rel="stylesheet" href="../../../../css/theme.css" />
     <link rel="stylesheet" href="../../../../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
     
       <script>
         // Current page data
-        var mkdocs_page_name = "TimedFunctionCalls";
-        var mkdocs_page_input_path = "MainFiles/GameObject/Methods/TimedFunctionCalls.md";
+        var mkdocs_page_name = "Timed events";
+        var mkdocs_page_input_path = "MainFiles\\GameObject\\Methods\\TimedFunctionCalls.md";
         var mkdocs_page_url = null;
       </script>
     
@@ -79,23 +79,13 @@
                 </li>
                 <li class="toctree-l2"><a class="reference internal" href="#">Attributes</a>
     <ul>
-                <li class="toctree-l3"><a class="reference internal" href="#">ClassAttributes</a>
-    <ul>
-                <li class="toctree-l4"><a class="reference internal" href="../../Attributes/ClassAttributes/GAME_OBJECTS/">GAME OBJECTS</a>
-                </li>
-                <li class="toctree-l4"><a class="reference internal" href="../../Attributes/ClassAttributes/INSTANCES/">INSTANCES</a>
-                </li>
-                <li class="toctree-l4"><a class="reference internal" href="../../Attributes/ClassAttributes/NAMES/">NAMES</a>
-                </li>
-    </ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../Attributes/classAttributes/">GAME_OBJECTS INSTANCES and NAMES</a>
                 </li>
                 <li class="toctree-l3"><a class="reference internal" href="#">InstanceAttributes</a>
     <ul>
-                <li class="toctree-l4"><a class="reference internal" href="../../Attributes/InstanceAttributes/packages/">Packages</a>
+                <li class="toctree-l4"><a class="reference internal" href="../../Attributes/InstanceAttributes/packages/">Packages and Scripts</a>
                 </li>
                 <li class="toctree-l4"><a class="reference internal" href="../../Attributes/InstanceAttributes/parent/">Parent</a>
-                </li>
-                <li class="toctree-l4"><a class="reference internal" href="../../Attributes/InstanceAttributes/sprite/">Sprite</a>
                 </li>
     </ul>
                 </li>
@@ -103,9 +93,17 @@
                 </li>
                 <li class="toctree-l2 current"><a class="reference internal current" href="#">Methods</a>
     <ul class="current">
-                <li class="toctree-l3"><a class="reference internal" href="../PackageFunctionCalls/">PackageFunctionCalls</a>
+                <li class="toctree-l3"><a class="reference internal" href="../PackageFunctionCalls/">Package Method Calls</a>
                 </li>
-                <li class="toctree-l3 current"><a class="reference internal current" href="./">TimedFunctionCalls</a>
+                <li class="toctree-l3 current"><a class="reference internal current" href="./">Timed events</a>
+    <ul class="current">
+    <li class="toctree-l4"><a class="reference internal" href="#start">start</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#fixed_update">fixed_update</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#update">update</a>
+    </li>
+    </ul>
                 </li>
     </ul>
                 </li>
@@ -114,7 +112,11 @@
               </ul>
               <p class="caption"><span class="caption-text">Tutorial</span></p>
               <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../../../../Tutorial/Introduction/">Introduction</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../Tutorial/Introduction/">Tutorial</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../Tutorial/LoadingAndInstantiating/">Loading and Instantiating the game object</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../../Tutorial/MakingAScript/">Making a script</a>
                   </li>
               </ul>
       </div>
@@ -134,7 +136,7 @@
           <li>MainFiles &raquo;</li>
           <li>GameObject &raquo;</li>
           <li>Methods &raquo;</li>
-      <li>TimedFunctionCalls</li>
+      <li>Timed events</li>
     <li class="wy-breadcrumbs-aside">
     </li>
   </ul>
@@ -143,13 +145,21 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                
+                <h1 id="timed-events">Timed events</h1>
+<p>All of these events happen automatically on a set timer. Almost always called from the main game loop.</p>
+<h2 id="start">start</h2>
+<p>called before the game loop starts running. Used as a second init in case you want to make sure something is instantiated before you do something with it. </p>
+<h2 id="fixed_update">fixed_update</h2>
+<p>Called with eventual consistently. This means that over time the fixed_update will be called the same amount no matter (to an extent) how slow the computer running the game is. This stops a sprite from moving incredibly slow or fast because of someone's computer. <br />
+This works by, every loop of the main game loop, it will check how long since the last time it reached the fixed_update method then stay in that loop until the fixed_update has caught up to where is should have been at by that point in the code when it first reached the fixed_update method. </p>
+<h2 id="update">update</h2>
+<p>unlike fixed_update, this <strong>will</strong> change depending on the computer's speed. It will always be called once per game loop. This is the cause of lag spikes if the fixed_update falls too far behind. </p>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../PackageFunctionCalls/" class="btn btn-neutral float-left" title="PackageFunctionCalls"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../../../../Tutorial/Introduction/" class="btn btn-neutral float-right" title="Introduction">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../PackageFunctionCalls/" class="btn btn-neutral float-left" title="Package Method Calls"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../../../Tutorial/Introduction/" class="btn btn-neutral float-right" title="Tutorial">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>

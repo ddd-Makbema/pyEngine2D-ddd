@@ -28,4 +28,18 @@ The movement is quite easy, we just need to call the __add_transform__ method in
 # it takes in the x and y value to move it by so we can just add the speed values.
 self.game_object.Transform.add_transform(self.x_speed, self.y_speed)
 ```
-Next to check if the image goes off the screen. To do this, we need to check if the image's x or y is less than 0 because then the image would be off the screen to the left/top. Then to check for the right/bottom, we will grab the width value for screen from the screen class. <br />
+Next to check if the image goes off the screen. To do this, we need to check if the image's x or y is less than 0 because then the image would be off the screen to the left/top. Then to check for the right/bottom, we will grab the width value for screen from the screen class. With this information we can do a simple check to see if it is out.<br />
+```python
+if (self.game_object.Transform.transform[0] < 0 or
+    self.game_object.Transform.transform[0] > self.game_object.screen.width): 
+        self.x_speed = -self.x_speed #reverses the horizontal direction of the go
+```
+Then we just need to do the same thing for the y-axis
+```python
+elif (self.game_object.Transform.transform[1] < 0 or
+    self.game_object.Transform.transform[1] > self.game_object.screen.height): 
+        self.y_speed = -self.y_speed
+```
+And were done now when you run it, it should show: <br />
+
+Adding a gif when I get home.

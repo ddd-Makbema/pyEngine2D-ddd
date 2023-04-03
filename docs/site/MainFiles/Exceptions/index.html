@@ -13,7 +13,7 @@
       <script>
         // Current page data
         var mkdocs_page_name = "Exceptions";
-        var mkdocs_page_input_path = "MainFiles/Exceptions.md";
+        var mkdocs_page_input_path = "MainFiles\\Exceptions.md";
         var mkdocs_page_url = null;
       </script>
     
@@ -67,6 +67,10 @@
               <ul class="current">
                   <li class="toctree-l1 current"><a class="reference internal current" href="./">Exceptions</a>
     <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#sprite-name-error">Sprite name error</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#parent-error">Parent error</a>
+    </li>
     </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../GameLoop/">Main Game Loop</a>
@@ -81,23 +85,13 @@
                 </li>
                 <li class="toctree-l2"><a class="reference internal" href="#">Attributes</a>
     <ul>
-                <li class="toctree-l3"><a class="reference internal" href="#">ClassAttributes</a>
-    <ul>
-                <li class="toctree-l4"><a class="reference internal" href="../GameObject/Attributes/ClassAttributes/GAME_OBJECTS/">GAME OBJECTS</a>
-                </li>
-                <li class="toctree-l4"><a class="reference internal" href="../GameObject/Attributes/ClassAttributes/INSTANCES/">INSTANCES</a>
-                </li>
-                <li class="toctree-l4"><a class="reference internal" href="../GameObject/Attributes/ClassAttributes/NAMES/">NAMES</a>
-                </li>
-    </ul>
+                <li class="toctree-l3"><a class="reference internal" href="../GameObject/Attributes/classAttributes/">GAME_OBJECTS INSTANCES and NAMES</a>
                 </li>
                 <li class="toctree-l3"><a class="reference internal" href="#">InstanceAttributes</a>
     <ul>
-                <li class="toctree-l4"><a class="reference internal" href="../GameObject/Attributes/InstanceAttributes/packages/">Packages</a>
+                <li class="toctree-l4"><a class="reference internal" href="../GameObject/Attributes/InstanceAttributes/packages/">Packages and Scripts</a>
                 </li>
                 <li class="toctree-l4"><a class="reference internal" href="../GameObject/Attributes/InstanceAttributes/parent/">Parent</a>
-                </li>
-                <li class="toctree-l4"><a class="reference internal" href="../GameObject/Attributes/InstanceAttributes/sprite/">Sprite</a>
                 </li>
     </ul>
                 </li>
@@ -105,9 +99,9 @@
                 </li>
                 <li class="toctree-l2"><a class="reference internal" href="#">Methods</a>
     <ul>
-                <li class="toctree-l3"><a class="reference internal" href="../GameObject/Methods/PackageFunctionCalls/">PackageFunctionCalls</a>
+                <li class="toctree-l3"><a class="reference internal" href="../GameObject/Methods/PackageFunctionCalls/">Package Method Calls</a>
                 </li>
-                <li class="toctree-l3"><a class="reference internal" href="../GameObject/Methods/TimedFunctionCalls/">TimedFunctionCalls</a>
+                <li class="toctree-l3"><a class="reference internal" href="../GameObject/Methods/TimedFunctionCalls/">Timed events</a>
                 </li>
     </ul>
                 </li>
@@ -116,7 +110,11 @@
               </ul>
               <p class="caption"><span class="caption-text">Tutorial</span></p>
               <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../../Tutorial/Introduction/">Introduction</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Tutorial/Introduction/">Tutorial</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Tutorial/LoadingAndInstantiating/">Loading and Instantiating the game object</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Tutorial/MakingAScript/">Making a script</a>
                   </li>
               </ul>
       </div>
@@ -144,6 +142,12 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="exceptions">Exceptions</h1>
+<h2 id="sprite-name-error">Sprite name error</h2>
+<p>Raised in game object when the user enters a file name of an image that does not exist. <br />
+Usually raised due to a spelling mistake in the instantiation of the game object, or removal of the image from the data folder.</p>
+<h2 id="parent-error">Parent error</h2>
+<p>Raised when the game object you are trying to call as a parent does not exist. <br />
+Usually raised due to a spelling mistake in the instantiation of the game object.</p>
               
             </div>
           </div><footer>
