@@ -1,3 +1,0 @@
-# CollisionHandler
-
-Not constructed yet
