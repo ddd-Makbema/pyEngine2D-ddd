@@ -1,7 +1,7 @@
 import pygame
 import time
-from src.game_object import GameObject
-from src.variables import screen
+from pyEngine2D.game_object import GameObject
+from pyEngine2D.variables import screen
 
 running = True
 timer = 0

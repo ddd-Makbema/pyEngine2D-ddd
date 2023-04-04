@@ -1,4 +1,4 @@
-from src.game_object import GameObject
+from pyEngine2D.game_object import GameObject
 from itertools import combinations
 import math
 import pygame

@@ -1,5 +1,5 @@
-from src.game_object import GameObject as GO
-from src.screen_init import ScreenInit
+from pyEngine2D.game_object import GameObject as GO
+from pyEngine2D.screen_init import ScreenInit
 
 
 screen = ScreenInit(360,480, 60, 100, "sam katz.jpg", "MyGame")

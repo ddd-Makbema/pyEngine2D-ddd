@@ -1,6 +1,6 @@
 
 import pygame
-from src.exceptions import SpriteNameError
+from pyEngine2D.exceptions import SpriteNameError
 import os
 
 class GameObject():
@@ -35,7 +35,7 @@ class GameObject():
 
 	def __init__(self, name ,screen, sprite="null.png", parent="origin", *args):
 		"""Initializes game object and adds the instance to all the lists"""
-		self.sprite = "src/data/" + sprite #data/ is to pull the image files from the data folder
+		self.sprite = "pyEngine2D/data/" + sprite #data/ is to pull the image files from the data folder
 		self.screen = screen 
 		self.packages = args
 		self.parent = parent
@@ -55,8 +55,8 @@ class GameObject():
 
 		#initializes the packages for the game object
 		for script in self.packages:
-			full_module_name = "src.scripts." + "builtins." + script
-			user_module_name = "src.scripts." + "user." + script
+			full_module_name = "pyEngine2D.scripts." + "builtins." + script
+			user_module_name = "pyEngine2D.scripts." + "user." + script
 			tempInst = self._import_class_from_string(user_module_name, full_module_name)(self)
 			name = script.rsplit(".", 1)[1]	
 			self.package_instances.append(tempInst)
@@ -170,7 +170,7 @@ def _pyLoad(sprite_to_load):
  		also calling a more descriptive exception if the sprite doesn't exist."""
 		
 	if not (os.path.exists(sprite_to_load)):
-		raise SpriteNameError(sprite_to_load.strip("src/data/"))
+		raise SpriteNameError(sprite_to_load.strip("pyEngine2D/data/"))
 	return pygame.image.load(sprite_to_load).convert_alpha()
 
 if __name__ == '__main__':
