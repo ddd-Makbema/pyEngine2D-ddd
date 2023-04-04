@@ -10,7 +10,7 @@ GAME_OBJECTS is a dictionary which contains the instances of the classes keyed t
 
 ```python
 #calling every instance of the game objects
-from src.game_object import GameObject
+from pyEngine2D.game_object import GameObject
 
 for object in GameObject.INSTANCES:
     object.start()
@@ -18,7 +18,7 @@ for object in GameObject.INSTANCES:
 
 ```python
 #Sample from variables while instantiating the game object
-from src.game_object import GameObject as GO
+from pyEngine2D.game_object import GameObject as GO
 
 
 GO.GAME_OBJECTS["katz"].Transform.rotation = 0

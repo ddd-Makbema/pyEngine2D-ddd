@@ -1,11 +1,11 @@
 # Making a script
 We now have a game object that can render onto the screen, but it does not move. Our script will now add that. <br />
 
-To make the script we need to go into src/scripts/user. In here let's make a script: bounce.py. <br />
+To make the script we need to go into pyEngine2D/scripts/user. In here let's make a script: bounce.py. <br />
 
 Inside the file let's start by importing two packages. These are not nessesary to this script we are writing but are for bigger files so it is good to add them. 
 ```python
-from src.game_object import GameObject
+from pyEngine2D.game_object import GameObject
 import pygame
 ```
 We first need an the init function with two arguments: self and game_object. Any attributes that need to be added we can do that seperatly after instantiating the game object.<br />

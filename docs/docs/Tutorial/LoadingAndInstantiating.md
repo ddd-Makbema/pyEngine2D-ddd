@@ -5,7 +5,7 @@ First we need to get our image for this tutorial we will use the python logo: <b
 <br />
 
 Get this image or another online and download it as a png or jpg. <br />
-Once done place the image in the data folder of src next to null.png. <br />
+Once done place the image in the data folder of pyEngine2D next to null.png. <br />
 
 ## Instantiating the game object.
 Then in the variables.py file, add a line:
