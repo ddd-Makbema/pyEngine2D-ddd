@@ -1,14 +1,24 @@
 import pygame
 import time
-from pyEngine2D.game_object import GameObject
-from pyEngine2D.variables import screen
-
-running = True
-timer = 0
-start_time = time.time()
+from pyEngine2D.game_object import GameObject as GO
+from pyEngine2D.screen_init import ScreenInit
 
 
-list_load_game_object = []
+
+
+def init_game():
+	"""Inits the default game objects, e.g. origin, and the screen"""
+	global timer
+	global running
+	global start_time
+	global list_load_game_object
+	global screen
+	running = True
+	timer = 0
+	start_time = time.time()
+	screen = ScreenInit(360,480, 60, 100, "sam katz.jpg", "MyGame")
+	GO("collision handler", screen, "null.png", "origin", "Collider2D.CollisionHandler")
+	GO("origin", screen, "null.png", "origin", "transform.Transform")
 
 
 
@@ -22,10 +32,10 @@ def update():
 			screen.width = screen.screen.get_size()[0]
 			screen.height = screen.screen.get_size()[1]
 			print([screen.width, screen.height])
-	for object in GameObject.INSTANCES:
+	for object in GO.INSTANCES:
 		object.update()			
 	#loads the images onto the screen accounting for transform
-	for object in GameObject.INSTANCES:
+	for object in GO.INSTANCES:
 		try:
 			object_transform = object.Transform.load.get_rect(
 				center = object.Transform.parent_transform())
@@ -40,7 +50,7 @@ def update():
 
 def fixed_update():
 	"""calls the fixed update function at set times per second. Independent from update"""
-	for object in GameObject.INSTANCES:
+	for object in GO.INSTANCES:
 		object.fixed_update()
 
 def delta_time():
@@ -53,7 +63,7 @@ def game_loop():
 	"""The main game loop that runs as the game runs. Returns when the pygame window is closed."""
 	global running
 	global timer
-	for object in GameObject.INSTANCES:
+	for object in GO.INSTANCES:
 		object.start()
 	while running:
 		for event in pygame.event.get():  
@@ -72,7 +82,17 @@ def game_loop():
 		timer += delta_time()
 	pygame.quit()
 	return
-	
+
+def quit():
+	pygame.quit
+
+init_game()	
+
+GO("Logo", screen, "logo.png", "origin", "transform.Transform", "bounce.Bounce")
+GO.GAME_OBJECTS["Logo"].Transform.transform = [180, 240]
+GO.GAME_OBJECTS["Logo"].Transform.scale = [0.3,0.3]
+
+
 game_loop()
 
 pygame.quit()
@@ -90,3 +110,15 @@ if __name__ == '__main__':
 # Rigidbody interpolation applies transform.position and rotation
 # OnMouseDown/OnMouseUp etc. events
 # All Update functions
+
+# GO("sam", screen, "null.png", "origin", "transform.Transform", "Collider2D.RectangleCollider2D", "player_movement.PlayerMovement")
+# GO.GAME_OBJECTS["sam"].RectangleCollider2D.set_collider_size([20,20])
+# GO.GAME_OBJECTS["sam"].Transform.transform = [220,220]
+# GO.GAME_OBJECTS["sam"].Transform.scale = [1,1]
+# GO.GAME_OBJECTS["sam"].Transform.rotation = 0
+
+# GO("katz", screen, "null.png", "origin", "transform.Transform", "Collider2D.RectangleCollider2D", "player_movement.PlayerMovement")
+# GO.GAME_OBJECTS["katz"].RectangleCollider2D.set_collider_size([20,20])
+# GO.GAME_OBJECTS["katz"].Transform.transform = [300,250]
+# GO.GAME_OBJECTS["katz"].Transform.scale = [1,1]
+# GO.GAME_OBJECTS["katz"].Transform.rotation = 0
