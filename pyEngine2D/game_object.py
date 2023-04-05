@@ -35,7 +35,7 @@ class GameObject():
 
 	def __init__(self, name ,screen, sprite="null.png", parent="origin", *args):
 		"""Initializes game object and adds the instance to all the lists"""
-		self.sprite = "pyEngine2D/data/" + sprite #data/ is to pull the image files from the data folder
+		self.sprite = sprite 
 		self.screen = screen 
 		self.packages = args
 		self.parent = parent
@@ -55,8 +55,8 @@ class GameObject():
 
 		#initializes the packages for the game object
 		for script in self.packages:
-			full_module_name = "pyEngine2D.scripts." + "builtins." + script
-			user_module_name = "pyEngine2D.scripts." + "user." + script
+			full_module_name = "pyEngine2D.scripts." + script
+			user_module_name = script
 			tempInst = self._import_class_from_string(user_module_name, full_module_name)(self)
 			name = script.rsplit(".", 1)[1]	
 			self.package_instances.append(tempInst)

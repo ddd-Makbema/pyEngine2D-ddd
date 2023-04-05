@@ -31,7 +31,7 @@ class ScreenInit:
 		pygame.display.set_caption(self.name_window)
 
 		if self.icon:
-			pygame_icon = pygame.image.load("pyEngine2D/data/" + self.icon)
+			pygame_icon = pygame.image.load(self.icon)
 			pygame.display.set_icon(pygame_icon)
 
 		self.screen = pygame.display.set_mode((self.width, self.height), pygame.RESIZABLE)
