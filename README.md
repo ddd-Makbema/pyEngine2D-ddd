@@ -4,42 +4,27 @@ A game engine built using pygame based off of the Unity game engine.
 
 ## Installation
 
-1: Use the package manager [pip](https://pip.pypa.io/en/stable/) to install pygame.
+Use the package manager [pip](https://pip.pypa.io/en/stable/) to install pygame.
 
 ```bash
 pip install pygame
 ```
+Go to variables.py and make a [screen object](ScreenInit.md)
+Save the screen as "screen"
 
-2: Go to variables.py and make a [screen object](ScreenInit.md)
+Initialize all the [game objects](game%20objects.md) you want underneath the screen in variables.py
+To set attributes for user-made scripts call the game object from the dictionary then follow the path to the attribute
 
-    go below to see examples of how to do this
+Load all media(images, sound, etc) into the "data" folder  
 
-    Save the screen as "screen"
-
-3: Initialize all the [game objects](game%20objects.md) you want underneath the screen in variables.py
-
-    To set attributes for user-made scripts call the game object from the dictionary then follow the path to the attribute
-
-4: Load all media(images, sound, etc) into the "data" folder
-
-5: Write the main game code into ".py" files in the "scripts/user" folder
-
-    there are two folders in scripts; "user" and "builtins" you only need to look at user
-
-a sample file is provided in the script/user folder already
-
-make sure to load all the packages you want by naming the file and class name at the end of the game object declaration
-
-6: Finally run the "main.py" file to run the game
-
-The following should appear:
-
-![game display](images/initial_run.gif)
-
+Write the main game code into ".py" files in the "scripts" folder
+  a sample file is provided in the script folder already
+  make sure to load all the packages you want by naming the file and class name at the end of the game object declaration
+  
+Finally run the "main.py" file to run the game
 ## Code Samples
 
 ### variables.py
-
 ```python
 from game_object import GameObject as GO
 from screen_init import ScreenInit
@@ -60,7 +45,6 @@ GO.GAME_OBJECTS["test_object"].Transform.rotation = 0
 ```
 
 ### player_movement.py
-
 ```python
 from game_object import GameObject
 
@@ -71,7 +55,7 @@ class PlayerMovement:
 		'''Every physics frame rotate the image by 1 degree and multiply the scale by 0.999'''
 		self.game_object.Transform.rotation = self.game_object.Transform.rotation - 1
 		self.game_object.Transform.scale = [self.game_object.Transform.scale[0] * 0.999, self.game_object.Transform.scale[1] * 0.999]
-
+		
 	#notice there is no update you do not need all the methods overriden in the player made scripts for it to run properly
 if __name__ == '__main__':
     pass
