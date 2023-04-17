@@ -15,3 +15,4 @@ class Bounce:
         self.game_object.Transform.transform[1] > self.game_object.screen.height): 
             self.y_speed = -self.y_speed
         self.game_object.Transform.add_transform(self.x_speed, self.y_speed)
+        self.game_object.Transform.rotation += 1
