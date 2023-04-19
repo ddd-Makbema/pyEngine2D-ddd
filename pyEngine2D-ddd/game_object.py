@@ -1,6 +1,8 @@
 
 import pygame
-from pyEngine2D.exceptions import SpriteNameError
+import importlib
+from pyEngine2D_ddd.exceptions import SpriteNameError
+from pyEngine2D_ddd.exceptions import MultInstanceError
 import os
 
 class GameObject():
@@ -34,6 +36,7 @@ class GameObject():
 	GAME_OBJECTS = {}
 
 	def __init__(self, name ,screen, sprite="null.png", parent="origin", *args):
+
 		"""Initializes game object and adds the instance to all the lists"""
 		self.sprite = sprite 
 		self.screen = screen 
@@ -56,22 +59,26 @@ class GameObject():
 
 		#initializes the packages for the game object
 		for script in self.packages:
-			full_module_name = "pyEngine2D.scripts." + script
+			full_module_name = "pyEngine2D_ddd.scripts." + script
 			user_module_name = script
 			tempInst = self._import_class_from_string(user_module_name, full_module_name)(self)
 			name = script.rsplit(".", 1)[1]	
 			
 			#maybe later make this more efficient
-			init_name = name
-			c = 0
-			while name in self.package_names:
-				name = init_name + "_" + str(c)
-				c += 1
+			if tempInst.MULTIPLE_INSTANCES:
+				init_name = name
+				c = 0
+				while name in self.package_names:
+					name = init_name + "_" + str(c)
+					c += 1
+
+			elif name in self.package_names:
+				raise MultInstanceError(name)
 
 			self.package_instances.append(tempInst)
 			self.package_names.append(name)
 			setattr(self, name, tempInst)
-	
+
 		
 	def start(self):
 		"""Initializes the sprite as an object and imports all packages needed. And calls the start funtions for them."""
@@ -166,6 +173,7 @@ class GameObject():
 		try:
 			mod_name, func_name = string_name.rsplit(".", 1)
 			mod = __import__(mod_name)
+			importlib.reload(mod)
 			for i in mod_name.split(".")[1:]:
 				mod = getattr(mod, i)
 			return getattr(mod, func_name)

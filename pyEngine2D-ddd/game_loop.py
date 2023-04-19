@@ -1,8 +1,8 @@
 import pygame
 import time
-from pyEngine2D.game_object import GameObject as GO
-from pyEngine2D.screen_init import ScreenInit
-from pyEngine2D import null
+from pyEngine2D_ddd.game_object import GameObject as GO
+from pyEngine2D_ddd.screen_init import ScreenInit
+from pyEngine2D_ddd import null
 
 
 

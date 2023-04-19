@@ -1,4 +1,4 @@
-from pyEngine2D.game_object import GameObject
+from pyEngine2D_ddd.game_object import GameObject
 import pygame
 import math
 
@@ -6,7 +6,10 @@ import math
 class Transform:
 	"""Contains all the methods for rendering a moving image on the screen
 	and changing attributes of that image."""
+
+
 	def __init__(self, game_object):
+		self.MULTIPLE_INSTANCES = False
 		self.game_object = game_object
 		self.transform = [-1,-1]
 		self.scale = [1,1]

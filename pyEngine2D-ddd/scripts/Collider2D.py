@@ -1,4 +1,4 @@
-from pyEngine2D.game_object import GameObject
+from pyEngine2D_ddd.game_object import GameObject
 from itertools import combinations
 import math
 import pygame
@@ -8,6 +8,7 @@ class CollisionHandler():
     Each child class will contain methods to determine if two game objects are touching."""
     ALL_COLLIDERS = []
     def __init__(self, game_object):
+        self.MULTIPLE_INSTANCES = False
         self.prev_colliders = ["a", "b", "c"]
         self.game_object = game_object
         self.smallest_vertex = [[0,0], [1,1]]
@@ -82,6 +83,7 @@ class CollisionHandler():
 
 class RectangleCollider2D():
     def __init__(self, game_object):
+        self.MULTIPLE_INSTANCES = True
         self.game_object = game_object
         self.is_trigger = False
         self.top_left = []
