@@ -1,3 +1,4 @@
-site_name: game engine
+site_name: pyEngine documentation
+
 theme:
-  name: material
+  name: readthedocs
