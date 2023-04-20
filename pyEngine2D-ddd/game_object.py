@@ -46,16 +46,17 @@ class GameObject():
 		self.image_start = None
 		self.package_instances = []
 		self.package_names = []
-		GameObject.NAMES.append(name) 
+		#makes sure there can not be two conflicting names.
+		added_name = self.name
+		if self.name in GameObject.NAMES:
+			i = 1 
+			while added_name in GameObject.NAMES:
+				added_name = self.name + f"({i})"
+				i += 1
+			self.name = added_name
+		GameObject.NAMES.append(self.name) 
 		GameObject.INSTANCES.append(self) 
 		GameObject.GAME_OBJECTS[self.name] = self
-
-		#makes sure there can not be two conflicting names.
-		if name in GameObject.NAMES:
-			i = 1 
-			while name in GameObject.NAMES:
-				name = name + f"({i})"
-				i += 1
 
 		#initializes the packages for the game object
 		for script in self.packages:
@@ -166,6 +167,36 @@ class GameObject():
 
 		return
 	
+	def rendering_order_sort():
+		"""changes the INSTANCES list to the order, first to last. Follow the instructions in command line. 
+		That order is saved and can then be called the next time. To run, call this function from the main 
+		file after instantiating the game objects to be rendered"""
+		temp_instances = GameObject.INSTANCES
+		index = ""
+		print("""You have entered the rendering order sorter. Follow the instructions in the console to set the 
+		order. collision handler, origin and game objects like those that you don't recognize making are builting game objects to
+		handle default values or act as different event handlers. They can be moved but it is reccomended not to."""
+		)
+		while index != "n":
+			print("Right now rendering order is: " + str(list(map(GameObject._get_go_names, temp_instances))))
+			index = input("Which index would you like to change? (starting from 0 on the left) (input n to break) ")
+			if index == "n":
+				GameObject._save_order(temp_instances)
+				print("The game is now running again with the updated order and the new order is saved to the data folder.")
+				return
+			final_loc = input("Which index would you like the object to be moved to? ")
+			temp_obj = temp_instances.pop(int(index))
+			temp_instances.insert(int(final_loc), temp_obj)
+			print("it has been done") # just realized how important this sounds
+		return
+	def _get_go_names(instance):
+		return instance.name 
+	
+	def _save_order(data):
+		with open("pyEngine2D_ddd/data/rendering_order.txt", "w") as save:
+			save.write(str(list(map(GameObject._get_go_names, data))))
+
+
 	def _import_class_from_string(self, string_name, name_secondary):
 		"""Given a string like 'module.submodule.func_name' which refers to a 	function, return that function so it can be called
  		Returns:
