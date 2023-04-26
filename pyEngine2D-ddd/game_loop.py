@@ -61,12 +61,17 @@ def delta_time():
 	start_time = time.time()
 	return x
 
-def game_loop():
+def game_loop(new_go = False):
 	"""The main game loop that runs as the game runs. Returns when the pygame window is closed."""
 	global running
 	global timer
-	for object in GO.INSTANCES:
-		object.start()
+	print(new_go)
+	if new_go:
+		GO.new_game_object()
+	else:
+		GO.old_game_object()
+
+
 	while running:
 		for event in pygame.event.get():  
 			if event.type == pygame.QUIT:
@@ -75,7 +80,6 @@ def game_loop():
 			if event.type == pygame.VIDEORESIZE:
 				screen.width = screen.screen.get_size()[0]
 				screen.height = screen.screen.get_size()[1]
-				print([screen.width, screen.height])
 		while timer > screen.fixed_fps:
 			fixed_update()
 			timer -= screen.fixed_fps

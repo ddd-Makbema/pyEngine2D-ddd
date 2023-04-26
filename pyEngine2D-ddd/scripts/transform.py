@@ -17,6 +17,7 @@ class Transform:
 		self.last_scale = [-1,-1]
 		self.last_parent_scale = [-1,-1]
 		self.center = [0,0]
+		self.previous_scale = self.scale
 	
 	def start(self):
 		self.size = [self.game_object.image_start.get_width(), self.game_object.image_start.get_height()]

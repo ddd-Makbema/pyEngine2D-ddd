@@ -1,6 +1,7 @@
 
 import pygame
 import importlib
+import ast
 from pyEngine2D_ddd.exceptions import SpriteNameError
 from pyEngine2D_ddd.exceptions import MultInstanceError
 import os
@@ -79,8 +80,21 @@ class GameObject():
 			self.package_instances.append(tempInst)
 			self.package_names.append(name)
 			setattr(self, name, tempInst)
+		self.start()
 
-		
+	def new_game_object():
+		"""updates the class level vars to account for the new game objects"""
+		GameObject.rendering_order_sort()
+
+	def old_game_object():
+		"""Loads the previous rendering order from file"""
+		with open("pyEngine2D_ddd/data/rendering_order.txt", "r") as save:
+			init_list = (save.read().splitlines())[0]
+			ret = ast.literal_eval(init_list)
+		GameObject.INSTANCES = []
+		for i in ret:
+			GameObject.INSTANCES.append(GameObject.GAME_OBJECTS[i])
+			
 	def start(self):
 		"""Initializes the sprite as an object and imports all packages needed. And calls the start funtions for them."""
 
@@ -184,15 +198,25 @@ class GameObject():
 				GameObject._save_order(temp_instances)
 				print("The game is now running again with the updated order and the new order is saved to the data folder.")
 				return
+			else:
+				try:
+					temp_obj = temp_instances.pop(int(index))
+				except:
+					print("That input is not valid. It may not be an int or out of range")
+					continue
 			final_loc = input("Which index would you like the object to be moved to? ")
-			temp_obj = temp_instances.pop(int(index))
-			temp_instances.insert(int(final_loc), temp_obj)
-			print("it has been done") # just realized how important this sounds
+			try:
+				temp_instances.insert(int(final_loc), temp_obj)
+			except:
+				print("That input is not valid for destination. It may not be an int or out of range")
+				continue
+			print("it has been done") # just realized how ominous this sounds
 		return
 	def _get_go_names(instance):
 		return instance.name 
 	
 	def _save_order(data):
+		GameObject.INSTANCES = data
 		with open("pyEngine2D_ddd/data/rendering_order.txt", "w") as save:
 			save.write(str(list(map(GameObject._get_go_names, data))))
 
