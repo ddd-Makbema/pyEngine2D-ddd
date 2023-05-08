@@ -27,5 +27,14 @@ class MultInstanceError(Exception):
     def __str__(self):
         return f"The script {self.f} does not allow multiple instances to be added to the same game object."
 
+class NoInstanceError(Exception):
+    """Raised when the user tries to remove a game object from the save data if that game object does not exist."""
+    def __init__(self, f, *args):
+        super().__init__(args)
+        self.f = f
+
+    def __str__(self):
+        return f"The game object, {self.f}, does not exist currently in the save data."
+
 if __name__ == '__main__':
     pass

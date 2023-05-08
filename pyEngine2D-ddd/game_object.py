@@ -21,13 +21,8 @@ class GameObject():
 	 	GAME_OBJECTS: dictionary keying the name of game objects to the instance
    		sprite: a string containing the name of the image from the data file
 	 	screen: default value contains the instance of the pygame screen defined in main
-   		transform: contains the Vector2D(x,y) screen coords for the image to be loaded
-	 	scale: contains the Vector2D(x,y) scale amount with 1 being default pixel size
-	 	rotation: contains a int of the degrees to rotate the image from up and down
    		parent: string with the name of the game object to inherit Transform from.
    		packages: a list of strings for file names you want to import
-		last_scale: int of scale from last frame to reduce operations per frame
-		last_parent_scale: int same as last_scale but for the parent object if there is one
 		image_start: screen image of the sprite entered with 0 rotation and 1 scale modified each frame.
 		package_instances: list of instances of classes loaded from packages entered in args
 		packages_import: temporary list of imported packages from scripts folder to be instantiated
@@ -81,6 +76,13 @@ class GameObject():
 			self.package_names.append(name)
 			setattr(self, name, tempInst)
 		self.start()
+
+	def delete(self):
+		GameObject.GAME_OBJECTS.pop(self.name)
+		GameObject.INSTANCES.remove(self)
+		GameObject.NAMES.remove(self.name)
+		return
+
 
 	def new_game_object():
 		"""updates the class level vars to account for the new game objects"""

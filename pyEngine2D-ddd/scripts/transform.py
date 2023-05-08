@@ -11,14 +11,24 @@ class Transform:
 	def __init__(self, game_object):
 		self.MULTIPLE_INSTANCES = False
 		self.game_object = game_object
+
 		self.transform = [-1,-1]
 		self.scale = [1,1]
 		self.rotation = 0
+
 		self.last_scale = [-1,-1]
 		self.last_parent_scale = [-1,-1]
 		self.center = [0,0]
 		self.previous_scale = self.scale
 	
+	def save_attributes(self):
+		data = {}
+		data["name"] = "transform.Transform"
+		data["transform"] = self.transform
+		data["scale"] = self.scale
+		data["rotation"] = self.rotation
+		return data
+
 	def start(self):
 		self.size = [self.game_object.image_start.get_width(), self.game_object.image_start.get_height()]
 		

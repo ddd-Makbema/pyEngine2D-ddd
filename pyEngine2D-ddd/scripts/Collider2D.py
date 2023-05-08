@@ -14,6 +14,12 @@ class CollisionHandler():
         self.smallest_vertex = [[0,0], [1,1]]
         self.l1 = [[0,0], [1,1]]
         self.l2 = [[0,0], [1,1]]
+
+    def save_attributes(self):
+        data = {}
+        data["name"] = "Collider2D.CollisionHandler"
+        return data
+
     def start(self):
         self.colliderPairs = list(combinations(CollisionHandler.ALL_COLLIDERS, 2))
 
@@ -99,6 +105,18 @@ class RectangleCollider2D():
         self.rotation_prev = 1000
         self.prev_t_scale = [-1,-1]
         self.axis_amount = 2
+
+    def save_attributes(self):
+        data = {}
+        data["name"] = "Collider2D.RectangleCollider2D"
+        data["is_trigger"] = self.is_trigger
+        data["top_left"] = self.top_left
+        data["top_right"] = self.top_right
+        data["bottom_left"] = self.bottom_left
+        data["bottom_right"] = self.bottom_right
+        data["collider_size"] = self.collider_size
+        return data
+
 
     def start(self):
         self.fixed_update()

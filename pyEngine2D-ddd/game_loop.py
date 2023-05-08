@@ -2,27 +2,64 @@ import pygame
 import time
 from pyEngine2D_ddd.game_object import GameObject as GO
 from pyEngine2D_ddd.screen_init import ScreenInit
+from pyEngine2D_ddd.data_load import DataLoad
 from pyEngine2D_ddd import null
 
 
 
+class GameLoop():
+	def init_game(self, new_game_objects):
+		"""Inits the default game objects, e.g. origin, and the screen"""
+		global timer
+		global running
+		global start_time
+		global screen
+		global data_handler
+		running = True
+		self.is_game_objects_changed = False
+		timer = 0
+		start_time = time.time()
+		screen = ScreenInit(360,480, 60, 100, null, "MyGame")
+		GO("collision handler", screen, null, "origin", "Collider2D.CollisionHandler")
+		GO("origin", screen, null, "origin", "transform.Transform")
+		data_handler = DataLoad(self)
+		if new_game_objects:
+			data_handler.save_game_objects()
+			self.is_game_objects_changed = True
+		else:
+			info = data_handler.import_game_object_data()
+			data_handler.instantiate_game_object(info, screen)
 
-def init_game():
-	"""Inits the default game objects, e.g. origin, and the screen"""
-	global timer
-	global running
-	global start_time
-	global list_load_game_object
-	global screen
-	running = True
-	timer = 0
-	start_time = time.time()
-	screen = ScreenInit(360,480, 60, 100, null, "MyGame")
-	GO("collision handler", screen, null, "origin", "Collider2D.CollisionHandler")
-	GO("origin", screen, null, "origin", "transform.Transform")
+	def game_loop(self, change_rendering_order = False):
+		"""The main game loop that runs as the game runs. Returns when the pygame window is closed."""
+		global running
+		global timer
+		data_handler.save_game_objects()
+		if change_rendering_order or self.is_game_objects_changed:
+			GO.new_game_object()
+		else:
+			GO.old_game_object()
 
 
+		while running:
+			for event in pygame.event.get():  
+				if event.type == pygame.QUIT:
+					running = False
+					return
+				if event.type == pygame.VIDEORESIZE:
+					screen.width = screen.screen.get_size()[0]
+					screen.height = screen.screen.get_size()[1]
+			while timer > screen.fixed_fps:
+				fixed_update()
+				timer -= screen.fixed_fps
+			update()
+			screen.clock.tick(screen.fps)
+			timer += delta_time()
+		pygame.quit()
+		return
 
+	def game_objects_changed(self, changed):
+		self.is_game_objects_changed = changed
 
 def update():
 	"""Renders the screen fps times a second."""
@@ -61,33 +98,6 @@ def delta_time():
 	start_time = time.time()
 	return x
 
-def game_loop(new_go = False):
-	"""The main game loop that runs as the game runs. Returns when the pygame window is closed."""
-	global running
-	global timer
-	print(new_go)
-	if new_go:
-		GO.new_game_object()
-	else:
-		GO.old_game_object()
-
-
-	while running:
-		for event in pygame.event.get():  
-			if event.type == pygame.QUIT:
-				running = False
-				return
-			if event.type == pygame.VIDEORESIZE:
-				screen.width = screen.screen.get_size()[0]
-				screen.height = screen.screen.get_size()[1]
-		while timer > screen.fixed_fps:
-			fixed_update()
-			timer -= screen.fixed_fps
-		update()
-		screen.clock.tick(screen.fps)
-		timer += delta_time()
-	pygame.quit()
-	return
 
 def quit():
 	pygame.quit

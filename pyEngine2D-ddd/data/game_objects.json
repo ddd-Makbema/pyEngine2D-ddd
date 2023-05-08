@@ -1,0 +1,34 @@
+[
+    {
+        "name": "Logo",
+        "sprite": "data/logo.png",
+        "parent": "origin",
+        "Transform": {
+            "name": "transform.Transform",
+            "transform": [
+                185,
+                240
+            ],
+            "scale": [
+                0.3,
+                0.3
+            ],
+            "rotation": 0
+        },
+        "Bounce": {
+            "name": "bounce.Bounce"
+        },
+        "RectangleCollider2D": {
+            "name": "Collider2D.RectangleCollider2D",
+            "is_trigger": false,
+            "top_left": [],
+            "top_right": [],
+            "bottom_left": [],
+            "bottom_right": [],
+            "collider_size": [
+                0,
+                0
+            ]
+        }
+    }
+]
