@@ -36,5 +36,14 @@ class NoInstanceError(Exception):
     def __str__(self):
         return f"The game object, {self.f}, does not exist currently in the save data."
 
+class MissingCollisionMatrixError(Exception):
+    """Internal error raised only when the collision matrix has never been saved before."""
+    def __init__(self, f, *args):
+        super().__init__(args)
+        self.f = f
+
+    def __str__(self):
+        return f"The collision matrix has not been inited before."
+
 if __name__ == '__main__':
     pass

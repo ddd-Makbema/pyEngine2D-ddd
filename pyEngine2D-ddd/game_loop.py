@@ -20,8 +20,8 @@ class GameLoop():
 		timer = 0
 		start_time = time.time()
 		screen = ScreenInit(360,480, 60, 100, null, "MyGame")
-		GO("collision handler", screen, null, "origin", "Collider2D.CollisionHandler")
-		GO("origin", screen, null, "origin", "transform.Transform")
+		GO("collision handler", screen, null, "origin", "Default", "Default", "Collider2D.CollisionHandler")
+		GO("origin", screen, null, "origin", "Default", "Default", "transform.Transform")
 		data_handler = DataLoad(self)
 		if new_game_objects:
 			data_handler.save_game_objects()

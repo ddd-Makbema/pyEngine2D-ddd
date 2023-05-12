@@ -29,9 +29,11 @@ class GameObject():
 """
 	INSTANCES = []
 	NAMES = []
+	LAYERS = []
 	GAME_OBJECTS = {}
+	LAYERS_INSTANCES = {}
 
-	def __init__(self, name ,screen, sprite="null.png", parent="origin", *args):
+	def __init__(self, name ,screen, sprite="null.png", parent="origin", tag="", layer="", *args):
 
 		"""Initializes game object and adds the instance to all the lists"""
 		self.sprite = sprite 
@@ -40,6 +42,8 @@ class GameObject():
 		self.parent = parent
 		self.name = name
 		self.image_start = None
+		self.tag = tag
+		self.layer = layer
 		self.package_instances = []
 		self.package_names = []
 		#makes sure there can not be two conflicting names.
@@ -53,6 +57,11 @@ class GameObject():
 		GameObject.NAMES.append(self.name) 
 		GameObject.INSTANCES.append(self) 
 		GameObject.GAME_OBJECTS[self.name] = self
+		if self.layer not in GameObject.LAYERS:
+			GameObject.LAYERS.append(self.layer)
+			GameObject.LAYERS_INSTANCES[self.layer] = [self]
+		else:
+			GameObject.LAYERS_INSTANCES[self.layer].append(self)
 
 		#initializes the packages for the game object
 		for script in self.packages:
@@ -86,17 +95,30 @@ class GameObject():
 
 	def new_game_object():
 		"""updates the class level vars to account for the new game objects"""
-		GameObject.rendering_order_sort()
+		if GameObject.LAYERS != GameObject.load_previous_layers():
+			GameObject.rendering_order_sort()
+			GameObject.collision_matrix_sorter()
+			print("new list")
 
 	def old_game_object():
 		"""Loads the previous rendering order from file"""
 		with open("pyEngine2D_ddd/data/rendering_order.txt", "r") as save:
 			init_list = (save.read().splitlines())[0]
 			ret = ast.literal_eval(init_list)
+		GameObject.LAYERS = list(ret)			
 		GameObject.INSTANCES = []
-		for i in ret:
-			GameObject.INSTANCES.append(GameObject.GAME_OBJECTS[i])
-			
+		for layer in GameObject.LAYERS:
+			for game_object in layer:
+				GameObject.INSTANCES.append(game_object)
+
+	def load_previous_layers():
+		with open("pyEngine2D_ddd/data/rendering_order.txt", "r") as save:
+			init_list = (save.read().splitlines())[0]
+			ret = ast.literal_eval(init_list)
+		return ret
+
+
+
 	def start(self):
 		"""Initializes the sprite as an object and imports all packages needed. And calls the start funtions for them."""
 
@@ -187,41 +209,49 @@ class GameObject():
 		"""changes the INSTANCES list to the order, first to last. Follow the instructions in command line. 
 		That order is saved and can then be called the next time. To run, call this function from the main 
 		file after instantiating the game objects to be rendered"""
-		temp_instances = GameObject.INSTANCES
 		index = ""
 		print("""You have entered the rendering order sorter. Follow the instructions in the console to set the 
 		order. collision handler, origin and game objects like those that you don't recognize making are builting game objects to
 		handle default values or act as different event handlers. They can be moved but it is reccomended not to."""
 		)
 		while index != "n":
-			print("Right now rendering order is: " + str(list(map(GameObject._get_go_names, temp_instances))))
+			print("Right now rendering order is: " + str(GameObject.LAYERS))
 			index = input("Which index would you like to change? (starting from 0 on the left) (input n to break) ")
 			if index == "n":
-				GameObject._save_order(temp_instances)
+				GameObject._save_order()
 				print("The game is now running again with the updated order and the new order is saved to the data folder.")
 				return
 			else:
 				try:
-					temp_obj = temp_instances.pop(int(index))
+					temp_obj = GameObject.LAYERS.pop(int(index))
 				except:
 					print("That input is not valid. It may not be an int or out of range")
 					continue
 			final_loc = input("Which index would you like the object to be moved to? ")
 			try:
-				temp_instances.insert(int(final_loc), temp_obj)
+				GameObject.LAYERS.insert(int(final_loc), temp_obj)
 			except:
 				print("That input is not valid for destination. It may not be an int or out of range")
 				continue
 			print("it has been done") # just realized how ominous this sounds
 		return
-	def _get_go_names(instance):
-		return instance.name 
-	
-	def _save_order(data):
-		GameObject.INSTANCES = data
-		with open("pyEngine2D_ddd/data/rendering_order.txt", "w") as save:
-			save.write(str(list(map(GameObject._get_go_names, data))))
 
+	def _save_order():
+		with open("pyEngine2D_ddd/data/rendering_order.txt", "w") as save:
+			save.write(str(GameObject.LAYERS))
+
+	def collision_matrix_sorter():
+		"""Used to edit the collision layer matrix."""
+		try:
+			collision_matrix = load_collision_matrix()
+		except MissingCollisionMatrixError as e:
+			collision_matrix = init_collision_matrix()
+
+	def print_collision_matrix(collision_matrix):
+		print(GameObject.LAYERS)
+		for i in range(len(collision_matrix)):
+			print(GameObject.LAYERS[-i-1], end=' ')
+			print(collision_matrix[i])		
 
 	def _import_class_from_string(self, string_name, name_secondary):
 		"""Given a string like 'module.submodule.func_name' which refers to a 	function, return that function so it can be called
@@ -249,4 +279,4 @@ def _pyLoad(sprite_to_load):
 	return pygame.image.load(sprite_to_load).convert_alpha()
 
 if __name__ == '__main__':
-    pass
+	pass
