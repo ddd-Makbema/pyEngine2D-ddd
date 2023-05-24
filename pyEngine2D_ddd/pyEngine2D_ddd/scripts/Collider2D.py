@@ -32,22 +32,21 @@ class CollisionHandler():
             # line = [i[0].collider_transform, i[1].collider_transform]
             closest_vertex = self._get_axis(pair)
 
-            vector_0 = self._coords_to_vector(pair[0].collider_transform, closest_vertex[0])
-            vector_1 = self._coords_to_vector(pair[1].collider_transform, closest_vertex[1])
-            vector_0_to_1 = self._coords_to_vector(pair[0].collider_transform, pair[1].collider_transform)
-            vector_1_to_0= self._coords_to_vector(pair[1].collider_transform, pair[0].collider_transform)
+            vector_0 = self.coords_to_vector(pair[0].collider_transform, closest_vertex[0])
+            vector_1 = self.coords_to_vector(pair[1].collider_transform, closest_vertex[1])
+            vector_0_to_1 = self.coords_to_vector(pair[0].collider_transform, pair[1].collider_transform)
             
-            self._collision_check(pair, vector_0, vector_1, vector_0_to_1, vector_1_to_0)
+            self._collision_check(pair, vector_0, vector_1, vector_0_to_1)
 
-            # if self._collision_check(pair, vector_0, vector_1, vector_0_to_1, vector_1_to_0):
+            # if self._collision_check(pair, vector_0, vector_1, vector_0_to_1):
                 # self._call_collisions(pair)
 
 
 
-    def _collision_check(self, game_objects, vector_0, vector_1, vector_0_to_1, vector_1_to_0):
+    def _collision_check(self, game_objects, vector_0, vector_1, vector_0_to_1):
         if self._bounding_circle_check(vector_0, vector_1, vector_1_to_0):
             print("circle")
-            if self._sat_check(game_objects, vector_0, vector_1, vector_0_to_1, vector_1_to_0):
+            if self._sat_check(game_objects, vector_0, vector_1, vector_0_to_1):
                 return True
         print("no")
         return False
@@ -60,8 +59,23 @@ class CollisionHandler():
             return True # collisions possible
         return False # no collision possible
 
-    def _sat_check(self, game_objects, vector_0, vector_1, vector_0_to_1, vector_1_to_0):
-        for axis in range(game_objects[0].axis_amount + game_objects[1].axis_amount):
+    def _sat_check(self, game_objects, vector_0, vector_1, vector_0_to_1):
+        vector_1_to_0 = self._reverse_vector(vector_0_to_1)
+        for axis in game_objects[0].get_axis():
+            #add efficency later
+            long_vector_proj = self._project(vector_0_to_1, axis)
+            short_0 = self._project(vector_0, long_vector_proj)
+            short_1 = self._project_closest_point(vector_1, long_vector_proj)
+        for axis in game_objects[1].get_axis():
+            axis = 
+            short_1 = self._project(vector_1, long_vector_proj)
+            short_0 = self._project_closest_point(vector_0, long_vector_proj)
+            
+    def _project_closest_point(a, long_vector):
+        long_vector = self._reverse_vector(long_vector)
+        return self._project(a, long_vector)
+
+
             
 
     def _call_collisions(self, game_objects):
@@ -69,20 +83,23 @@ class CollisionHandler():
 
     # Helper functions, especially vector operations
 
-    def _coords_to_vector(self, start, end):
+    def coords_to_vector(self, start, end):
         return [end[0]-start[0], end[1]-start[1]]
 
     def _get_vector_length(self, vector):
         return math.sqrt(vector[0]**2 + vector[1]**2)
 
     def _project(self, a, b):
-        self._scaler_mult(b ,(self._dot_product(a, b)/self._get_vector_length(b)))
+        return self._scaler_mult(b ,(self._dot_product(a, b)/self._get_vector_length(b)**2))
 
     def _dot_product(self, a, b):
         return (a[0]*b[0])+(a[1]*b[1])
 
     def _scaler_mult(self, vector, scaler):
-        return [vector[0]*scaler, vector[1]*scaler] 
+        return [vector[0]*scaler, vector[1]*scaler]
+
+    def _reverse_vector(self, vector):
+        return [-vector[0], -vector[1]] 
             
 
 
@@ -212,6 +229,17 @@ class RectangleCollider2D():
         vertex[3] = [self.collider_transform[0] + rot_x[3], self.collider_transform[1] + rot_y[3]]
         return vertex
         
+    def get_axis(self):
+        """seperate from the function to find the closest axis in the collision handler class"""
+        axis_list = []
+    
+        axis_list.append(CollisionHandler.coords_to_vector(self.collider_transform, self.add_collider_transform(0, self.collider_size[1]/2)))
+        axis_list.append(CollisionHandler.coords_to_vector(self.collider_transform, self.add_collider_transform( self.collider_size[0]/2), 0))
+        
+        return axis_list
+
+    def add_collider_transform(self, a, b):
+        return [self.collider_transform+a, self.collider_transform+b]
 
     def set_collider_size(self, size):
         self.collider_size_orig = size
