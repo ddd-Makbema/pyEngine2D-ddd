@@ -1,0 +1,63 @@
+[
+    {
+        "name": "obj",
+        "sprite": "C:\\Users\\secarver\\OneDrive\\Desktop\\GameEngine\\pyEngine2D_ddd\\data\\null.png",
+        "parent": "origin",
+        "Transform": {
+            "name": "transform.Transform",
+            "transform": [
+                99,
+                149
+            ],
+            "scale": [
+                1,
+                1
+            ],
+            "rotation": 0
+        },
+        "Bounce": {
+            "name": "bounce.Bounce"
+        },
+        "RectangleCollider2D": {
+            "name": "Collider2D.RectangleCollider2D",
+            "is_trigger": false,
+            "top_left": [],
+            "top_right": [],
+            "bottom_left": [],
+            "bottom_right": [],
+            "collider_size": [
+                0,
+                0
+            ]
+        }
+    },
+    {
+        "name": "obj1",
+        "sprite": "C:\\Users\\secarver\\OneDrive\\Desktop\\GameEngine\\pyEngine2D_ddd\\data\\null.png",
+        "parent": "origin",
+        "Transform": {
+            "name": "transform.Transform",
+            "transform": [
+                199,
+                149
+            ],
+            "scale": [
+                1,
+                1
+            ],
+            "rotation": 0
+        },
+        "RectangleCollider2D": {
+            "name": "Collider2D.RectangleCollider2D",
+            "is_trigger": false,
+            "top_left": [],
+            "top_right": [],
+            "bottom_left": [],
+            "bottom_right": [],
+            "collider_size": [
+                0,
+                0
+            ]
+        }
+    }
+]
