@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>Transform - pyEngine documentation</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Transform";
+        var mkdocs_page_input_path = "docs/Builtins/Transform.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <script src="../../../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> pyEngine documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">Welcome to pyEngine (seperate from pyEngine3D) docs</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Docs</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../">pyEngine2D</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../Definitions/">Definitions</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Builtins</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../RigidBody2D/">RigidBody2D</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="./">Transform</a>
+    <ul class="current">
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">Collisions</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../Collisions/Colliders2D/">Colliders2D</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="../Collisions/CollisionHandler/">CollisionHandler</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">MainFiles</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../MainFiles/Exceptions/">Exceptions</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../MainFiles/GameLoop/">Main Game Loop</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../MainFiles/Screen/">Screen</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../MainFiles/Variables/">Variables</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="#">GameObject</a>
+    <ul>
+                <li class="toctree-l3"><a class="reference internal" href="../../MainFiles/GameObject/GameObject/">Game Object</a>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="#">Attributes</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../MainFiles/GameObject/Attributes/classAttributes/">GAME_OBJECTS INSTANCES and NAMES</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="#">InstanceAttributes</a>
+                </li>
+    </ul>
+                </li>
+                <li class="toctree-l3"><a class="reference internal" href="#">Methods</a>
+    <ul>
+                <li class="toctree-l4"><a class="reference internal" href="../../MainFiles/GameObject/Methods/PackageFunctionCalls/">Package Method Calls</a>
+                </li>
+                <li class="toctree-l4"><a class="reference internal" href="../../MainFiles/GameObject/Methods/TimedFunctionCalls/">Timed events</a>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="#">Tutorial</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../Tutorial/Introduction/">Tutorial</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../Tutorial/LoadingAndInstantiating/">Loading and Instantiating the game object</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../Tutorial/MakingAScript/">Making a script</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">pyEngine documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a> &raquo;</li>
+          <li>Docs &raquo;</li>
+          <li>Builtins &raquo;</li>
+      <li>Transform</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="transform">Transform</h1>
+<p>Handles the movement of the game object and how that image will look when rendered on the screen. <br />
+The main 3 attributes for each game object are transform, scale, and rotation. </p>
+<h1 id="attributes">Attributes</h1>
+<h2 id="user-set">User Set</h2>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>discription</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>transform</td>
+<td>where on the screen the image will render, by default (-1,-1) so it will appear off the screen</td>
+</tr>
+<tr>
+<td>scale</td>
+<td>how much to scale the image. By default (1,1) so each pixel in the image will be one pixel on the screen.</td>
+</tr>
+<tr>
+<td>rotation</td>
+<td>how much to rotate the image from straight up and down in degrees. By default 0</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="auto-filledpassed">Auto filled/passed</h2>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>discription</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>game_object</td>
+<td>auto-passed-in. The instance of the game object that this class instance is a part of</td>
+</tr>
+<tr>
+<td>last_scale</td>
+<td>used to store the scale of the game object last physics frame. Look to <strong>efficient_scaling</strong> for why this is</td>
+</tr>
+<tr>
+<td>last_parent_scale</td>
+<td>same as last_scale but for the instance of the parent game object</td>
+</tr>
+<tr>
+<td>previous_scale</td>
+<td>stores the scale that is returned from the _scale method and used to check for changes in the scale over time</td>
+</tr>
+<tr>
+<td>size</td>
+<td>the height and width in pixels of the raw image</td>
+</tr>
+<tr>
+<td>load</td>
+<td>rotated and scaled image ready to be blit'ed onto the screen</td>
+</tr>
+<tr>
+<td>center</td>
+<td>transformed coords for the image accounting for the parent's game object</td>
+</tr>
+<tr>
+<td>final_scale</td>
+<td>the scaling amount actually used on the image to scale it</td>
+</tr>
+</tbody>
+</table>
+<h1 id="efficient-scaling">Efficient Scaling</h1>
+<p>To not have to recalculate the scale of the image every frame, a check is run to see if the scale has changed from what it was the last frame. If it or the scale of the parent has not changed, then the final_scale value will remain the same as the last frame.</p>
+<h1 id="methods">Methods</h1>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>discription</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>start</td>
+<td>Grabs the size value of the image. Done in start to make sure the image has been instantiated before trying to get the size</td>
+</tr>
+<tr>
+<td>update</td>
+<td>Gets the transformed image accounting for rotation and scale</td>
+</tr>
+<tr>
+<td>add_transform</td>
+<td>takes in x and y and adds them to the transform value to allow screen movement</td>
+</tr>
+<tr>
+<td>parent_transform</td>
+<td>Transforms the coords to account for the transform of the parent game object. Calls the _rotate_transform method to do this. Fills the center attribute here.</td>
+</tr>
+<tr>
+<td>_rotate_transform</td>
+<td>takes in the rotation of the parent game object, and the (x,y) coords of the game object multiplied by the scale value of the parent to normalize for the scaling of the parent and gives the coords to rotate the child game object around the parent.</td>
+</tr>
+<tr>
+<td>_f_scale</td>
+<td>Gets the scale value using the _scale method and transforms the raw image first by scaling it then by rotating it and returns that image. Uses the builtin pyGame methods transform.scale and rotate to do this</td>
+</tr>
+<tr>
+<td>_scale</td>
+<td>First checks if the scale or the parent scale has changed from last frame and if so returns the last final_scale amount. If not then runs _parent_scale and saves the value to previous_scale and updates _last_parent_scale to ready for next frame.</td>
+</tr>
+<tr>
+<td>_parent_scale</td>
+<td>for the x and y scale values each, it multiplies the size (pixel amount) by the scale (for the child) by the scale (for the parent) and returns it</td>
+</tr>
+</tbody>
+</table>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../RigidBody2D/" class="btn btn-neutral float-left" title="RigidBody2D"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Collisions/Colliders2D/" class="btn btn-neutral float-right" title="Colliders2D">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../RigidBody2D/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../Collisions/Colliders2D/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '../../..';</script>
+    <script src="../../../js/theme_extra.js" defer></script>
+    <script src="../../../js/theme.js" defer></script>
+      <script src="../../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
